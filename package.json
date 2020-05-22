@@ -1,0 +1,28 @@
+{
+  "name": "jsonbase",
+  "version": "0.0.1",
+  "description": "jsonbase is like a database which build on top of json files. This isn't an alternative for database, but if you want to develop quick prototypes/poc or need of a database with minimal requirements then, JSONBASoption you can consider",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devs-Garden/jsonbase.git"
+  },
+  "keywords": [
+    "jsonbase",
+    "json",
+    "database",
+    "database",
+    "with",
+    "filesystem",
+    "datastore"
+  ],
+  "author": "Syam Danda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Devs-Garden/jsonbase/issues"
+  },
+  "homepage": "https://github.com/Devs-Garden/jsonbase#readme"
+}
