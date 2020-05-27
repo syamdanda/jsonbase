@@ -13,7 +13,7 @@ const CONSTANTS = {
     },
     'VALIDATE': {
         'FAIL': 'Validation Error',
-        'FIELD_VALUE_INVALID': 'field {0} value is invalid',
+        'FIELD_VALUE_INVALID': 'field {0} value is invalid, no special characters are allowed other than .,-,_',
         'REQUIRED': 'field {0} is required.',
         'NOT_A_DATE': 'field {0} is incorrect UTC Date',
         'NOT_AN_EMAIL': 'field {0} is invalid email address',
@@ -23,7 +23,8 @@ const CONSTANTS = {
         'NOT_A_NUMBER': 'field {0} is invalid number value',
         'NOT_A_VALUE': 'field {0} cant be empty.',
         'NOT_A_VALID_GENDER': '{0} is not a valid gender type.',
-        'VALUE_TOO_BIG': 'field {0} data is too large'
+        'VALUE_TOO_BIG': 'field {0} data is too large',
+        'VALUE_TOO_SMALL': 'field {0} data is too small, minimum of 3 length is required.'
     }
 };
 

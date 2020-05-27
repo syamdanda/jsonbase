@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/Devs-Garden/jsonbase/issues"
   },
-  "homepage": "https://github.com/Devs-Garden/jsonbase#readme"
+  "homepage": "https://github.com/Devs-Garden/jsonbase#readme",
+  "dependencies": {
+    "validator": "^13.0.0"
+  }
 }

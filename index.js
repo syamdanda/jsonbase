@@ -1,7 +1,9 @@
-function createDatabase(dbPath, callback) {
-  callback({
-    'status': 'Success',
-    'response': []
+var db = require('./database.js');
+
+function createDatabase(name, dbPath, callback) {
+  db.createDatabase(name, dbPath, function(response) {
+  	 callback(response);
+  	 return;
   });
 }
 
