@@ -53,5 +53,12 @@ module.exports.utils = {
 							},
 							isNumber: function(n) { 
 								return /^-?[\d.]+(?:e-?\d+)?$/.test(n); 
-							}			
+							},
+							getConfigFileTemplate: function() {
+								return { 
+								    databases: [
+
+								    ]
+								};
+							}		
 						};

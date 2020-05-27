@@ -73,6 +73,16 @@ function createDatabase(options, callback) {
 			            });
 			            return;
 			        } else {
+			        	let configTemplate = utils.getConfigFileTemplate();
+
+			        	var db = {
+			        		'name': name,
+			        		'path': basePath,
+			        		'tables': []
+			        	};			        	
+			        	configTemplate['databases'].push(db);
+			        	let data = JSON.stringify(configTemplate);
+			        	fs.writeFileSync(basePath + utils.getFileSeparator() + 'jsonDB-config.json', data);
 			            callback({
 	            			status: REQUEST_CODES.SUCCESS,
 	            			msg: 'database created successfully'
