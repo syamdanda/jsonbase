@@ -44,25 +44,44 @@ function createDatabase(options, callback) {
 	}
 
 	if (errorList.length) {
-		console.log('errorList', errorList);
 		callback({
 			status: REQUEST_CODES.FAIL,
 			error: errorList
 		});
 		return;
 	} else {
+		var basePath;
 		if (! path) {
-			var basePath = utils.getRootPath() + utils.getFileSeparator() + name;
-			console.log('basePath :' + basePath + ';');
-			console.log(utils.getOS());
-
-			if (!fs.existsSync(basePath)){
-			    fs.mkdirSync(basePath);
-			}
+			basePath = utils.getRootPath() + utils.getFileSeparator() + name;			
 		} else {
-			console.log('path', path);
+			basePath = path + utils.getFileSeparator() + name;
 		}
-		
+
+		fs.exists(basePath, function(exists) {
+		    if (exists) {
+		       callback({
+		       		status: REQUEST_CODES.FAIL,
+		       		error: 'folder exists already'
+		       });
+		       return;
+		    } else {
+			    fs.mkdir(basePath,function(e){
+			        if(e ){
+			            callback({
+			            	status: REQUEST_CODES.FAIL,
+			            	error: e
+			            });
+			            return;
+			        } else {
+			            callback({
+	            			status: REQUEST_CODES.SUCCESS,
+	            			msg: 'database created successfully'
+	            		});
+	            		return;
+			        }
+			    });
+		    }
+		});		
 	}
 }
 
