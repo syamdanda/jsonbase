@@ -3,11 +3,12 @@
 
 
 var utils = require('./utils/utils').utils;
+var path = require('path');
+
 var CONSTANTS = utils.CONSTANTS;
 var REQUEST_CODES = CONSTANTS.REQUEST_CODES;
 var VALIDATE = utils.CONSTANTS.VALIDATE;
 var validate = utils.validate;
-var basePath = __dirname;
 
 function createDatabase(name, path, callback) {
 	var errorList = [];
@@ -49,7 +50,9 @@ function createDatabase(name, path, callback) {
 		});
 		return;
 	} else {
+		var basePath = utils.getRootPath();
 		console.log('basePath :' + basePath + ';');
+		console.log(utils.getOS());
 	}
 }
 

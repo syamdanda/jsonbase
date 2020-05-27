@@ -1,4 +1,7 @@
 
+var os = require('os');
+var path = require('path');
+
 module.exports.utils = {
 							CONSTANTS: require('./constants').CONSTANTS,
 							validate: require('./validate').validate,
@@ -28,6 +31,18 @@ module.exports.utils = {
 						        var ss = ("0" + (date.getSeconds())).slice(-2);
 
 						        return yyyy + MM + dd+  hh + mm + ss;
+							},
+							getRootPath: function() {
+								return path.dirname(require.main.filename || process.mainModule.filename);
+							},
+							getOS: function() {
+								return os.type();
+							},
+							getOSVersion: function() {
+								return os.release();
+							},
+							getOSPlatform: function() {
+								return os.platform();
 							},
 							getRandomNumber: function() {
 								//generates 8 digit random integer as string
