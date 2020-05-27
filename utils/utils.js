@@ -35,6 +35,9 @@ module.exports.utils = {
 							getRootPath: function() {
 								return path.dirname(require.main.filename || process.mainModule.filename);
 							},
+							getFileSeparator: function() {
+								return path.sep;
+							},
 							getOS: function() {
 								return os.type();
 							},

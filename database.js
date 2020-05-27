@@ -3,16 +3,17 @@
 
 
 var utils = require('./utils/utils').utils;
-var path = require('path');
+var fs = require('fs');
 
 var CONSTANTS = utils.CONSTANTS;
 var REQUEST_CODES = CONSTANTS.REQUEST_CODES;
 var VALIDATE = utils.CONSTANTS.VALIDATE;
 var validate = utils.validate;
 
-function createDatabase(name, path, callback) {
+function createDatabase(options, callback) {
 	var errorList = [];
-
+	var name = options.name;
+	var path = options.path;
 	if (! name) {
 		var e = {
 			status: VALIDATE.FAIL,
@@ -50,9 +51,18 @@ function createDatabase(name, path, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath();
-		console.log('basePath :' + basePath + ';');
-		console.log(utils.getOS());
+		if (! path) {
+			var basePath = utils.getRootPath() + utils.getFileSeparator() + name;
+			console.log('basePath :' + basePath + ';');
+			console.log(utils.getOS());
+
+			if (!fs.existsSync(basePath)){
+			    fs.mkdirSync(basePath);
+			}
+		} else {
+			console.log('path', path);
+		}
+		
 	}
 }
 
