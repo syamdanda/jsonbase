@@ -1,7 +1,15 @@
 var db = require('./database.js');
+var tables = require('./tables.js');
 
-function createDatabase(name, dbPath, callback) {
-  db.createDatabase(name, dbPath, function(response) {
+function createDatabase(options, callback) {
+  db.createDatabase(options, function(response) {
+  	 callback(response);
+  	 return;
+  });
+}
+
+function dropDatabase(name, callback) {
+  db.dropDatabase(name, function(response) {
   	 callback(response);
   	 return;
   });
