@@ -4,6 +4,7 @@
 
 var utils = require('./utils/utils').utils;
 var fs = require('fs');
+var rimraf = require('rimraf');
 
 var CONSTANTS = utils.CONSTANTS;
 var REQUEST_CODES = CONSTANTS.REQUEST_CODES;
@@ -95,4 +96,67 @@ function createDatabase(options, callback) {
 	}
 }
 
+function dropDatabase(name, callback) {
+	var errorList = [];
+	if (! name) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'name')
+		};
+		errorList.push(e);
+	} else  {
+		if (name.length < 2) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'name')
+			};
+			errorList.push(e);
+		} else if (name.length > 20) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'name')
+			};
+			errorList.push(e);
+		} 
+		if (! validate.isValidString(name)) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'name')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (errorList.length) {
+		callback({
+			status: REQUEST_CODES.FAIL,
+			error: errorList
+		});
+		return;
+	} else {
+		var basePath = utils.getRootPath() + utils.getFileSeparator() + name;
+		fs.exists(basePath, function(exists) {
+		    if (exists) {
+		       rimraf(basePath, function () { 
+		       	callback({
+		       			status: REQUEST_CODES.SUCCESS,
+		       			error: 'Database deleted with the given name ' + name
+		       	});
+		       	return;
+		       });
+		    } else {
+			    callback({
+			    		status: REQUEST_CODES.FAIL,
+			    		error: 'No database exists with the given name ' + name
+			    });
+			    return;
+		    }
+		});
+
+
+	}
+
+}
+
 module.exports.createDatabase = createDatabase;
+module.exports.dropDatabase = dropDatabase;

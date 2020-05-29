@@ -16,3 +16,4 @@ function dropDatabase(name, callback) {
 }
 
 module.exports.createDatabase = createDatabase;
+module.exports.dropDatabase = dropDatabase;
