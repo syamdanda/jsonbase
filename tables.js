@@ -6,6 +6,9 @@ var CONSTANTS = utils.CONSTANTS;
 var REQUEST_CODES = CONSTANTS.REQUEST_CODES;
 var VALIDATE = utils.CONSTANTS.VALIDATE;
 var validate = utils.validate;
+var _ = require('underscore')
+
+const configFileName = 'jsonDB-config.json';
 
 function createTable(options, callback) {
 	var errorList = [];
@@ -87,32 +90,45 @@ function createTable(options, callback) {
 		       });
 		       return;
 		    } else {
-			    fs.mkdir(basePath,function(e){
-			        if(e) {
+		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+			    fs.writeFile(filePath, '[]', function(err) {
+			        if(err) {
 			            callback({
-			            	status: REQUEST_CODES.FAIL,
-			            	error: e
-			            });
-			            return;
-			        } else {
-			        	let configTemplate = utils.getConfigFileTemplate();
+        		       		status: REQUEST_CODES.FAIL,
+        		       		msg: 'Error while creating file',
+        		       		error: err
 
-			        	var db = {
-			        		'name': name,
-			        		'path': basePath,
-			        		'tables': []
-			        	};			        	
-			        	configTemplate['databases'].push(db);
-			        	let data = JSON.stringify(configTemplate);
-			        	fs.writeFileSync(basePath + utils.getFileSeparator() + 'jsonDB-config.json', data);
-			            callback({
-	            			status: REQUEST_CODES.SUCCESS,
-	            			msg: 'database created successfully'
-	            		});
-	            		return;
+        		       });
+        		       return;
+			        } else {
+			        	var configFilePath = basePath + utils.getFileSeparator() + configFileName;
+			        	var configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
+			        	console.log(JSON.stringify(configFileObj, null, 2));
+			        	var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
+			        	currentDBConfigs['tables'].push(tableName);
+			        	console.log(JSON.stringify(configFileObj, null, 2));
+			        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
+			        	    if(err) {
+			        	        callback({
+                		       		status: REQUEST_CODES.FAIL,
+                		       		msg: 'Error while updating config file',
+                		       		error: err
+
+                		       });
+                		       return;
+			        	    } else {
+    				            callback({
+    	        		       		status: REQUEST_CODES.SUCCESS,
+    	        		       		msg: 'table created successfully with table name ' + tableName
+    	        		       });
+    	        		       return;
+			        	    }
+			        	});
 			        }
 			    });
 		    }
 		});		
 	}
 }
+
+module.exports.createTable = createTable;

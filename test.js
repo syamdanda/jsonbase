@@ -8,3 +8,7 @@ jsonDB.createDatabase({'name': 'test'}, function(response) {
 	console.log(JSON.stringify(response));
 });
 */
+
+jsonDB.createTable({'database': 'test', 'tableName': 'users'}, function(response) {
+	console.log(JSON.stringify(response));
+});

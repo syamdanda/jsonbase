@@ -15,5 +15,13 @@ function dropDatabase(name, callback) {
   });
 }
 
+function createTable(options, callback) {
+  tables.createTable(options, function(response) {
+  	 callback(response);
+  	 return;
+  });
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
+module.exports.createTable = createTable;

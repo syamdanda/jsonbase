@@ -27,6 +27,7 @@
   "homepage": "https://github.com/Devs-Garden/jsonbase#readme",
   "dependencies": {
     "rimraf": "^3.0.2",
+    "underscore": "^1.10.2",
     "validator": "^13.0.0"
   }
 }
