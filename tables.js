@@ -84,13 +84,7 @@ function createTable(options, callback) {
 		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		       callback({
-		       		status: REQUEST_CODES.FAIL,
-		       		error: 'No database exists with the given name'
-		       });
-		       return;
-		    } else {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	var filePath = basePath + utils.getFileSeparator() + tableName + '.json';
 			    fs.writeFile(filePath, '[]', function(err) {
 			        if(err) {
 			            callback({
@@ -125,7 +119,13 @@ function createTable(options, callback) {
 			        	    }
 			        	});
 			        }
-			    });
+			    });		       
+		    } else {
+		    	callback({
+		    			status: REQUEST_CODES.FAIL,
+		    			error: 'No database exists with the given name'
+		    	});
+		    	return;
 		    }
 		});		
 	}
@@ -205,12 +205,6 @@ function dropTable(options, callback) {
 		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		       callback({
-		       		status: REQUEST_CODES.FAIL,
-		       		error: 'No database exists with the given name'
-		       });
-		       return;
-		    } else {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
@@ -263,7 +257,13 @@ function dropTable(options, callback) {
 			        	
 			        	
 			        }
-			    });
+			    });		       
+		    } else {
+		    	callback({
+		    			status: REQUEST_CODES.FAIL,
+		    			error: 'No database exists with the given name'
+		    	});
+		    	return;
 		    }
 		});		
 	}
