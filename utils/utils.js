@@ -1,6 +1,7 @@
 
 var os = require('os');
 var path = require('path');
+var uuid = require('uuid-random');
 
 module.exports.utils = {
 							CONSTANTS: require('./constants').CONSTANTS,
@@ -19,6 +20,9 @@ module.exports.utils = {
 									result = result.replace(re, arguments[i]);
 								}
 								return result;
+							},
+							generateDocId: function(){
+								return uuid();
 							},
 							getSystemTime: function() {
 								//return new Date().getTime();
