@@ -36,8 +36,16 @@ function insertRecord(options, callback) {
   });
 }
 
+function getRecordById(options, callback) {
+  tables.getRecordById(options, function(response) {
+     callback(response);
+     return;
+  });
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
 module.exports.createTable = createTable;
 module.exports.dropTable = dropTable;
 module.exports.insertRecord = insertRecord;
+module.exports.getRecordById = getRecordById;

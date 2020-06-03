@@ -1,7 +1,9 @@
 
+var fs = require('fs');
 var os = require('os');
 var path = require('path');
 var uuid = require('uuid-random');
+var _ = require('underscore');
 
 module.exports.utils = {
 							CONSTANTS: require('./constants').CONSTANTS,
@@ -23,6 +25,19 @@ module.exports.utils = {
 							},
 							generateDocId: function(){
 								return uuid();
+							},
+							generateDocIdByTable: function(tablePath) {								
+								var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+								if (tableObj && undefined != tableObj) {
+									if (Object.keys(tableObj).length) {
+										var keys = Object.keys(tableObj).map(Number);
+										return keys.length ? _.max(keys) + 1 : 1;
+									} else {
+										return 1;
+									}
+								} else {
+									return 1;
+								}
 							},
 							getSystemTime: function() {
 								//return new Date().getTime();

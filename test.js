@@ -21,6 +21,12 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email': 'syam@devsgarden.com', 'password': 'passpass'}}, function(response) {
+/*jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email': 'abc'}}, function(response) {
+	console.log(JSON.stringify(response));
+});*/
+
+jsonDB.getRecordById({'database': 'test', 'tableName': 'users', recordId: '1'}, function(response) {
 	console.log(JSON.stringify(response));
 });
+
+
