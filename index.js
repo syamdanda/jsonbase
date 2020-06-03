@@ -29,7 +29,15 @@ function dropTable(options, callback) {
   });
 }
 
+function insertRecord(options, callback) {
+  tables.insertRecord(options, function(response) {
+     callback(response);
+     return;
+  });
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
 module.exports.createTable = createTable;
 module.exports.dropTable = dropTable;
+module.exports.insertRecord = insertRecord;

@@ -20,3 +20,7 @@ var jsonDB = require('./index.js');
 /*jsonDB.dropTable({'database': 'test', 'tableName': 'tokens'}, function(response) {
 	console.log(JSON.stringify(response));
 });*/
+
+jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email': 'syam@devsgarden.com', 'password': 'passpass'}}, function(response) {
+	console.log(JSON.stringify(response));
+});
