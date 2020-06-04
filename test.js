@@ -25,7 +25,11 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-jsonDB.getRecordById({'database': 'test', 'tableName': 'users', recordId: '1'}, function(response) {
+/*jsonDB.getRecordById({'database': 'test', 'tableName': 'users', recordId: '1'}, function(response) {
+	console.log(JSON.stringify(response));
+});*/
+
+jsonDB.getRecordByKeyValue({'database': 'test', 'tableName': 'users', key: 'email', value: 'abc'}, function(response) {
 	console.log(JSON.stringify(response));
 });
 
