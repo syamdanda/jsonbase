@@ -29,8 +29,10 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-jsonDB.getRecordByKeyValue({'database': 'test', 'tableName': 'users', key: 'email', value: 'abc'}, function(response) {
+/*jsonDB.getRecordByKeyValue({'database': 'test', 'tableName': 'users', key: 'email', value: 'abc'}, function(response) {
+	console.log(JSON.stringify(response));
+});*/
+
+jsonDB.getRecordByObject({'database': 'test', 'tableName': 'users', obj: {'email': 'abc', 'password': 'passpass'}}, function(response) {
 	console.log(JSON.stringify(response));
 });
-
-
