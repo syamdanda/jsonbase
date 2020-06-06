@@ -1,6 +1,6 @@
 {
   "name": "@syamdanda/json-base",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "jsonbase is like a database which build on top of json files. This isn't an alternative for database, but if you want to develop quick prototypes/poc or need of a database with minimal requirements then, JSONBASoption you can consider",
   "main": "index.js",
   "scripts": {
