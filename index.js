@@ -57,6 +57,13 @@ function getRecordByObject(options, callback) {
   });
 }
 
+function getAllRecords(options, callback) {
+  tables.getAllRecords(options, function(response) {
+     callback(response);
+     return;
+  });
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
 module.exports.createTable = createTable;
@@ -65,3 +72,4 @@ module.exports.insertRecord = insertRecord;
 module.exports.getRecordById = getRecordById;
 module.exports.getRecordByKeyValue = getRecordByKeyValue;
 module.exports.getRecordByObject = getRecordByObject;
+module.exports.getAllRecords = getAllRecords;
