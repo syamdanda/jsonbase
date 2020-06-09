@@ -761,7 +761,6 @@ function getRecordByObject(options, callback) {
 
 function getAllRecords(options, callback) {
 	var errorList = [];
-	var obj = options.obj;
 	var tableName = options.tableName;
 	var database = options.database;
 
@@ -821,14 +820,6 @@ function getAllRecords(options, callback) {
 			};
 			errorList.push(e);
 		}
-	}
-
-	if (! obj || undefined == obj || !Object.keys(obj).length) {
-		var e = {
-			status: VALIDATE.FAIL,
-			error: utils.formatText(VALIDATE.REQUIRED, 'obj')
-		};
-		errorList.push(e);
 	}
 
 	if (errorList.length) {
