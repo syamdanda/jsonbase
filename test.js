@@ -40,3 +40,7 @@ var jsonDB = require('./index.js');
 /*jsonDB.getAllRecords({'database': 'test', 'tableName': 'users', obj: {'email': 'abc', 'password': 'passpass'}}, function(response) {
 	console.log(JSON.stringify(response));
 });*/
+
+jsonDB.deleteRecordById({'database': 'test', 'tableName': 'users', 'recordId': '1'}, function(response) {
+	console.log(JSON.stringify(response));
+});
