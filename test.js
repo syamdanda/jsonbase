@@ -41,6 +41,6 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-jsonDB.deleteRecordById({'database': 'test', 'tableName': 'users', 'recordId': '1'}, function(response) {
+/*jsonDB.deleteRecordById({'database': 'test', 'tableName': 'users', 'recordId': '1'}, function(response) {
 	console.log(JSON.stringify(response));
-});
+});*/
