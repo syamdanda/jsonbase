@@ -993,11 +993,165 @@ function deleteRecordById(options, callback) {
 	}
 }
 
+function deleteRecordByKeyValue(options, callback) {
+	var errorList = [];
+	var key = options.key;
+	var value = options['value'];
+	var tableName = options.tableName;
+	var database = options.database;
+
+	if (! tableName) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
+		};
+		errorList.push(e);
+	} else  {
+		if (tableName.length < 2) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
+			};
+			errorList.push(e);
+		} else if (tableName.length > 20) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
+			};
+			errorList.push(e);
+		} 
+		if (! validate.isValidString(tableName)) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (! database) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'database')
+		};
+		errorList.push(e);
+	} else  {
+		if (database.length < 2) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
+			};
+			errorList.push(e);
+		} else if (database.length > 20) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
+			};
+			errorList.push(e);
+		} 
+		if (! validate.isValidString(database)) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (! key) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'key')
+		};
+		errorList.push(e);
+	}
+	if (! value) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'value')
+		};
+		errorList.push(e);
+	}
+
+	if (errorList.length) {
+		callback({
+			status: REQUEST_CODES.FAIL,
+			error: errorList
+		});
+		return;
+	} else {
+		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		console.log(basePath);
+		fs.exists(basePath, function(exists) {
+		    if (exists) {
+		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+			    fs.exists(filePath, function(err) { //check file exists or not
+			        if(err) {
+			            callback({
+        		       		status: REQUEST_CODES.FAIL,
+        		       		msg: 'No table exists with the given name - ' + tableName,
+        		       		error: err
+
+        		       });
+        		       return;
+			        } else {
+			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+						var filter = {};
+						filter[key] = value;
+						var arrayObj = Object.values(tableObj);
+						var records  = _.where(arrayObj, filter);
+						if (records && records.length) {
+							let lastIndex = records.length;
+							records.forEach(function(record) {
+								delete tableObj[Object.keys(tableObj).find(key => tableObj[key] === record) + ''];
+								lastIndex = lastIndex -1;
+								if (lastIndex <= 0) {   
+									fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+						        	    if(err) {
+						        	        callback({
+			                		       		status: REQUEST_CODES.FAIL,
+			                		       		msg: 'Error while deleting record from table',
+			                		       		error: err
+
+			                		       });
+			                		       return;
+						        	    } else {
+			    				            callback({
+			    	        		       		status: REQUEST_CODES.SUCCESS,
+			    	        		       		msg: 'Deleted records successfully, Total matched records :  ' + records.length 
+			    	        		       });
+			    	        		       return;
+						        	    }
+						        	});
+								}
+							});
+						} else {
+					            callback({
+		        		       		status: REQUEST_CODES.SUCCESS,
+		        		       		msg: 'No matching records found to delete with the given filter condition ' + JSON.stringify(filter)
+		        		       });
+		        		       return;
+						}									            
+			        }
+			    });		       
+		    } else {
+		    	callback({
+		    			status: REQUEST_CODES.FAIL,
+		    			error: 'No database exists with the given name'
+		    	});
+		    	return;
+		    }
+		});		
+	}
+}
+
 module.exports.createTable = createTable;
 module.exports.dropTable = dropTable;
 
 module.exports.insertRecord = insertRecord;
 module.exports.deleteRecordById = deleteRecordById;
+module.exports.deleteRecordByKeyValue = deleteRecordByKeyValue;
 
 module.exports.getRecordById = getRecordById;
 module.exports.getRecordByKeyValue = getRecordByKeyValue;
