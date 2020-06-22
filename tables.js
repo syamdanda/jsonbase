@@ -367,7 +367,7 @@ function insertRecord(options, callback) {
 						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
 						var docId = utils.generateDocIdByTable(tablePath) + '';
 						console.log('docId :: ', docId);
-						recordObj['_id'] = docId;
+						recordObj['_ObjId'] = docId;
 						tableObj[docId] = recordObj;
 			        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
 			        	    if(err) {
