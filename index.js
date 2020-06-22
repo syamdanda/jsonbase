@@ -78,6 +78,13 @@ function deleteRecordByKeyValue(options, callback) {
   });
 }
 
+function updateRecordById(options, callback) {
+  tables.updateRecordById(options, function(response) {
+     callback(response);
+     return;
+  });
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
 module.exports.createTable = createTable;
@@ -89,3 +96,4 @@ module.exports.getRecordByObject = getRecordByObject;
 module.exports.getAllRecords = getAllRecords;
 module.exports.deleteRecordById = deleteRecordById;
 module.exports.deleteRecordByKeyValue = deleteRecordByKeyValue;
+module.exports.updateRecordById = updateRecordById;

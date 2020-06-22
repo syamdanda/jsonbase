@@ -21,9 +21,9 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email': 'abc121'}}, function(response) {
+/*jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email': 'abc121'}}, function(response) {
 	console.log(JSON.stringify(response));
-});
+});*/
 
 /*jsonDB.getRecordById({'database': 'test', 'tableName': 'users', recordId: '1'}, function(response) {
 	console.log(JSON.stringify(response));
@@ -49,3 +49,7 @@ jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email':
 /*jsonDB.deleteRecordByKeyValue({'database': 'test', 'tableName': 'users', key: 'email', value: 'ab2c'}, function(response) {
 	console.log(JSON.stringify(response));
 });*/
+
+jsonDB.updateRecordById({'database': 'test', 'tableName': 'users', recordId: '10', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
+	console.log(JSON.stringify(response));
+});
