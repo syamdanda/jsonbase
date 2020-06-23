@@ -16,7 +16,11 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-/*jsonDB.dropTable({'database': 'test', 'tableName': 'tokens'}, function(response) {
+/*jsonDB.dropTable({'database': 'test', 'tableName': 'users3'}, function(response) {
+	console.log(JSON.stringify(response));
+});*/
+
+/*jsonDB.dropTable({'database': 'test', 'tableName': 'users21'}, function(response) {
 	console.log(JSON.stringify(response));
 });*/
 
@@ -53,11 +57,11 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-/*for (i=0; i<100; i++) {
-	jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
+for (i=0; i<100; i++) {
+	jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email': 'ab' + i}}, function(response) {
 		console.log(JSON.stringify(response));
 	});
-}*/
+}
 
 /*jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
 		console.log('111111111111111111111111111111');

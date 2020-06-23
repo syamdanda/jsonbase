@@ -381,28 +381,38 @@ function insertRecord(options, callback) {
         		       return;
 			        } else {
 			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						var docId = utils.generateDocIdByTable(tablePath) + '';
-						console.log('docId :: ', docId);
-						recordObj['_ObjId'] = docId;
-						tableObj[docId] = recordObj;
-			        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
-			        	    if(err) {
-			        	        callback({
-                		       		status: REQUEST_CODES.FAIL,
-                		       		msg: 'Error while insert record into table',
-                		       		error: err
+			        	var tableObj;
+			        	try {
+			        		tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+			        		var docId = utils.generateDocIdByTable(tableObj) + '';
+			        		recordObj['_ObjId'] = docId;
+			        		tableObj[docId] = recordObj;
+				        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+				        	    if(err) {
+				        	        callback({
+	                		       		status: REQUEST_CODES.FAIL,
+	                		       		msg: 'Error while insert record into table',
+	                		       		error: err
 
-                		       });
-                		       return;
-			        	    } else {
-    				            callback({
-    	        		       		status: REQUEST_CODES.SUCCESS,
-    	        		       		msg: 'record inserted successfully with the documentId ' + docId
-    	        		       });
-    	        		       return;
-			        	    }
-			        	});															        	
+	                		       });
+	                		       return;
+				        	    } else {
+	    				            callback({
+	    	        		       		status: REQUEST_CODES.SUCCESS,
+	    	        		       		msg: 'record inserted successfully with the documentId ' + docId
+	    	        		       });
+	    	        		       return;
+				        	    }
+				        	});
+			        	} catch (e) {
+        	    			console.log('wating for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				insertRecord(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}		        																        	
 			        }
 			    });		       
 		    } else {
