@@ -8,14 +8,9 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-
-jsonDB.createTable({'database': 'test', 'tableName': 'users2'}, function(response) {
+/*jsonDB.createTable({'database': 'test', 'tableName': 'users21'}, function(response) {
 	console.log(JSON.stringify(response));
-});
-
-jsonDB.createTable({'database': 'test', 'tableName': 'users3'}, function(response) {
-	console.log(JSON.stringify(response));
-});
+});*/
 
 /*jsonDB.createTable({'database': 'test', 'tableName': 'tokens'}, function(response) {
 	console.log(JSON.stringify(response));

@@ -121,8 +121,7 @@ function createTable(options, callback) {
         				} catch (e) {
         	    			console.log('wating for file operation to be completed :::: ');
         	    			setTimeout(function() {
-        	    				console.log('hello world!');
-        	    				asyncTest(options, function(resp) {
+        	    				createTable(options, function(resp) {
         	    					callback(resp);
         	    				})
         	    			}, 1000);
@@ -238,34 +237,42 @@ function dropTable(options, callback) {
 	          		       		return;                                    
 							} else {
 								var configFilePath = basePath + utils.getFileSeparator() + configFileName;
-								var configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
-								var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
-								const index = currentDBConfigs['tables'].indexOf(tableName);
-								if (index > -1) {
-								  	currentDBConfigs['tables'].splice(index, 1);
-			  			        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
-			  			        	    if(err) {
-			  			        	        callback({
-			                  		       		status: REQUEST_CODES.FAIL,
-			                  		       		msg: 'Error while updating config file',
-			                  		       		error: err
+								var configFileObj;
+		        	        	try {
+		        					configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
+									var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
+									const index = currentDBConfigs['tables'].indexOf(tableName);
+									if (index > -1) {
+									  	currentDBConfigs['tables'].splice(index, 1);
+				  			        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
+				  			        	    if(err) {
+				  			        	        callback({
+				                  		       		status: REQUEST_CODES.FAIL,
+				                  		       		msg: 'Error while updating config file',
+				                  		       		error: err
 
-			                  		       });
-			                  		       return;
-			  			        	    } else {
-			      				            callback({
-			      	        		       		status: REQUEST_CODES.SUCCESS,
-			      	        		       		msg: 'table dropped successfully with table name ' + tableName
-			      	        		       });
-			      	        		       return;
-			  			        	    }
-			  			        	});
-								}
+				                  		       });
+				                  		       return;
+				  			        	    } else {
+				      				            callback({
+				      	        		       		status: REQUEST_CODES.SUCCESS,
+				      	        		       		msg: 'table dropped successfully with table name ' + tableName
+				      	        		       });
+				      	        		       return;
+				  			        	    }
+				  			        	});
+									}
+		        				} catch (e) {
+		        	    			console.log('wating for file operation to be completed :::: ');
+		        	    			setTimeout(function() {
+		        	    				dropTable(options, function(resp) {
+		        	    					callback(resp);
+		        	    				})
+		        	    			}, 1000);
+		        	    			return;
+		        	    		}								
 							}                                                        
-						});
-			        	
-			        	
-			        	
+						});		        	
 			        }
 			    });		       
 		    } else {
