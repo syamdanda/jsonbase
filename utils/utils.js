@@ -26,8 +26,7 @@ module.exports.utils = {
 							generateDocId: function(){
 								return uuid();
 							},
-							generateDocIdByTable: function(tablePath) {								
-								var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							generateDocIdByTable: function(tableObj) {								
 								if (tableObj && undefined != tableObj) {
 									if (Object.keys(tableObj).length) {
 										var keys = Object.keys(tableObj).map(Number);

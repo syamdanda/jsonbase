@@ -96,28 +96,38 @@ function createTable(options, callback) {
         		       return;
 			        } else {
 			        	var configFilePath = basePath + utils.getFileSeparator() + configFileName;
-			        	var configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
-			        	console.log(JSON.stringify(configFileObj, null, 2));
-			        	var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
-			        	currentDBConfigs['tables'].push(tableName);
-			        	console.log(JSON.stringify(configFileObj, null, 2));
-			        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
-			        	    if(err) {
-			        	        callback({
-                		       		status: REQUEST_CODES.FAIL,
-                		       		msg: 'Error while updating config file',
-                		       		error: err
+        	        	var configFileObj;
+        	        	try {
+        					configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
+        					var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
+        					currentDBConfigs['tables'].push(tableName);
+				        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
+				        	    if(err) {
+				        	        callback({
+	                		       		status: REQUEST_CODES.FAIL,
+	                		       		msg: 'Error while updating config file',
+	                		       		error: err
 
-                		       });
-                		       return;
-			        	    } else {
-    				            callback({
-    	        		       		status: REQUEST_CODES.SUCCESS,
-    	        		       		msg: 'table created successfully with table name ' + tableName
-    	        		       });
-    	        		       return;
-			        	    }
-			        	});
+	                		       });
+	                		       return;
+				        	    } else {
+	    				            callback({
+	    	        		       		status: REQUEST_CODES.SUCCESS,
+	    	        		       		msg: 'table created successfully with table name ' + tableName
+	    	        		       });
+	    	        		       return;
+				        	    }
+				        	});
+        				} catch (e) {
+        	    			console.log('wating for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				console.log('hello world!');
+        	    				asyncTest(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}		        	
 			        }
 			    });		       
 		    } else {

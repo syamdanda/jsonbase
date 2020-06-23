@@ -9,9 +9,13 @@ var jsonDB = require('./index.js');
 });*/
 
 
-/*jsonDB.createTable({'database': 'test', 'tableName': 'users'}, function(response) {
+jsonDB.createTable({'database': 'test', 'tableName': 'users2'}, function(response) {
 	console.log(JSON.stringify(response));
-});*/
+});
+
+jsonDB.createTable({'database': 'test', 'tableName': 'users3'}, function(response) {
+	console.log(JSON.stringify(response));
+});
 
 /*jsonDB.createTable({'database': 'test', 'tableName': 'tokens'}, function(response) {
 	console.log(JSON.stringify(response));
@@ -37,7 +41,7 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-/*jsonDB.getAllRecords({'database': 'test', 'tableName': 'users', obj: {'email': 'abc', 'password': 'passpass'}}, function(response) {
+/*jsonDB.getAllRecords({'database': 'test', 'tableName': 'users'}, function(response) {
 	console.log(JSON.stringify(response));
 });*/
 
@@ -50,6 +54,22 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-jsonDB.updateRecordById({'database': 'test', 'tableName': 'users', recordId: '10', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
+/*jsonDB.updateRecordById({'database': 'test', 'tableName': 'users', recordId: '10', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
 	console.log(JSON.stringify(response));
-});
+});*/
+
+/*for (i=0; i<100; i++) {
+	jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
+		console.log(JSON.stringify(response));
+	});
+}*/
+
+/*jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
+		console.log('111111111111111111111111111111');
+		console.log(JSON.stringify(response));
+	});
+
+jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
+		console.log('2222222222222222222222222222');
+		console.log(JSON.stringify(response));
+	});*/
