@@ -58,7 +58,7 @@ var jsonDB = require('./index.js');
 });*/
 
 for (i=0; i<100; i++) {
-	jsonDB.insertRecord({'database': 'test', 'tableName': 'users', record: {'email': 'ab' + i}}, function(response) {
+	jsonDB.getRecordById({'database': 'test', 'tableName': 'users', recordId: '116'}, function(response) {
 		console.log(JSON.stringify(response));
 	});
 }

@@ -521,13 +521,24 @@ function getRecordById(options, callback) {
         		       return;
 			        } else {
 			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						var record  = tableObj[recordId];
-			            callback({
-        		       		status: REQUEST_CODES.SUCCESS,
-        		       		result: record
-        		       });
-        		       return;														        	
+			        	var tableObj;
+			        	try {
+							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							var record  = tableObj[recordId];
+				            callback({
+	        		       		status: REQUEST_CODES.SUCCESS,
+	        		       		result: record
+	        		       });
+	        		       return;
+			        	} catch (e) {
+        	    			console.log('wating for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				getRecordById(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}																				        	
 			        }
 			    });		       
 		    } else {
