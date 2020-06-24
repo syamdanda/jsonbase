@@ -655,16 +655,27 @@ function getRecordByKeyValue(options, callback) {
         		       return;
 			        } else {
 			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						var filter = {};
-						filter[key] = value;
-						var arrayObj = Object.values(tableObj);
-						var records  = _.where(arrayObj, filter);
-			            callback({
-        		       		status: REQUEST_CODES.SUCCESS,
-        		       		result: records
-        		       });
-        		       return;														        	
+						var tableObj;
+						try {
+							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							var filter = {};
+							filter[key] = value;
+							var arrayObj = Object.values(tableObj);
+							var records  = _.where(arrayObj, filter);
+				            callback({
+	        		       		status: REQUEST_CODES.SUCCESS,
+	        		       		result: records
+	        		       });
+	        		       return;
+	        		    }  catch (e) {
+        	    			console.log('wating for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				getRecordByKeyValue(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}
 			        }
 			    });		       
 		    } else {
