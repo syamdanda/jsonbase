@@ -18,7 +18,7 @@ npm i @syamdanda/json-base
 And then import the json-base npm module into your nodejs application
 
 ```
-var jsonDB = require('syamdanda/json-base');
+var jsonDB = require('@syamdanda/json-base');
 ```
 
 ## [Documentation](#documentation)
