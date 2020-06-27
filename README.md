@@ -77,7 +77,7 @@ Current stable version is 0.0.5 which is released on 27.Jun.2020
 
 ## Authors
 
-* **Syam Danda** - *Initial work* - [Github Profile](https://github.com/syamdanda)
+* **Syam Danda**(https://github.com/syamdanda)
 
 See also the list of [contributors](https://github.com/Devs-Garden/jsonbase/contributors) who participated in this project.
 
