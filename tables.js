@@ -119,7 +119,7 @@ function createTable(options, callback) {
 				        	    }
 				        	});
         				} catch (e) {
-        	    			console.log('wating for file operation to be completed :::: ');
+        	    			console.log('waiting for file operation to be completed :::: ');
         	    			setTimeout(function() {
         	    				createTable(options, function(resp) {
         	    					callback(resp);
@@ -263,7 +263,7 @@ function dropTable(options, callback) {
 				  			        	});
 									}
 		        				} catch (e) {
-		        	    			console.log('wating for file operation to be completed :::: ');
+		        	    			console.log('waiting for file operation to be completed :::: ');
 		        	    			setTimeout(function() {
 		        	    				dropTable(options, function(resp) {
 		        	    					callback(resp);
@@ -405,7 +405,7 @@ function insertRecord(options, callback) {
 				        	    }
 				        	});
 			        	} catch (e) {
-        	    			console.log('wating for file operation to be completed :::: ');
+        	    			console.log('waiting for file operation to be completed :::: ');
         	    			setTimeout(function() {
         	    				insertRecord(options, function(resp) {
         	    					callback(resp);
@@ -531,7 +531,7 @@ function getRecordById(options, callback) {
 	        		       });
 	        		       return;
 			        	} catch (e) {
-        	    			console.log('wating for file operation to be completed :::: ');
+        	    			console.log('waiting for file operation to be completed :::: ');
         	    			setTimeout(function() {
         	    				getRecordById(options, function(resp) {
         	    					callback(resp);
@@ -668,7 +668,7 @@ function getRecordByKeyValue(options, callback) {
 	        		       });
 	        		       return;
 	        		    }  catch (e) {
-        	    			console.log('wating for file operation to be completed :::: ');
+        	    			console.log('waiting for file operation to be completed :::: ');
         	    			setTimeout(function() {
         	    				getRecordByKeyValue(options, function(resp) {
         	    					callback(resp);
@@ -784,18 +784,28 @@ function getRecordByObject(options, callback) {
         		       return;
 			        } else {
 			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						var filter = {};
-						var arrayObj = Object.values(tableObj);
-						Object.keys(obj).forEach(function(key) {
-							filter[key] = obj[key];
-						})
-						var records  = _.where(arrayObj, filter);
-			            callback({
-        		       		status: REQUEST_CODES.SUCCESS,
-        		       		result: records
-        		       });
-        		       return;														        	
+			        	try {
+							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							var filter = {};
+							var arrayObj = Object.values(tableObj);
+							Object.keys(obj).forEach(function(key) {
+								filter[key] = obj[key];
+							})
+							var records  = _.where(arrayObj, filter);
+				            callback({
+	        		       		status: REQUEST_CODES.SUCCESS,
+	        		       		result: records
+	        		       });
+	        		       return;
+			        	}  catch (e) {
+        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				getRecordByObject(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}																				        	
 			        }
 			    });		       
 		    } else {
@@ -894,15 +904,25 @@ function getAllRecords(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						var filter = {};
-						var arrayObj = Object.values(tableObj);
-			            callback({
-        		       		status: REQUEST_CODES.SUCCESS,
-        		       		result: arrayObj
-        		       });
-        		       return;														        	
+			        	try {
+				        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							var filter = {};
+							var arrayObj = Object.values(tableObj);
+				            callback({
+	        		       		status: REQUEST_CODES.SUCCESS,
+	        		       		result: arrayObj
+	        		       });
+	        		       return;
+			        	}  catch (e) {
+        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				getAllRecords(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}			        															        	
 			        }
 			    });		       
 		    } else {
@@ -996,7 +1016,6 @@ function deleteRecordById(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -1010,26 +1029,36 @@ function deleteRecordById(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						delete tableObj[recordId];
-			        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
-			        	    if(err) {
-			        	        callback({
-                		       		status: REQUEST_CODES.FAIL,
-                		       		msg: 'Error while deleting record from table',
-                		       		error: err
+			        	try {
+				        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							delete tableObj[recordId];
+				        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+				        	    if(err) {
+				        	        callback({
+	                		       		status: REQUEST_CODES.FAIL,
+	                		       		msg: 'Error while deleting record from table',
+	                		       		error: err
 
-                		       });
-                		       return;
-			        	    } else {
-    				            callback({
-    	        		       		status: REQUEST_CODES.SUCCESS,
-    	        		       		msg: 'record deleted successfully with the recordId ' + recordId
-    	        		       });
-    	        		       return;
-			        	    }
-			        	});													        	
+	                		       });
+	                		       return;
+				        	    } else {
+	    				            callback({
+	    	        		       		status: REQUEST_CODES.SUCCESS,
+	    	        		       		msg: 'record deleted successfully with the recordId ' + recordId
+	    	        		       });
+	    	        		       return;
+				        	    }
+				        	});
+			        	}  catch (e) {
+        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				deleteRecordById(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}			        													        	
 			        }
 			    });		       
 		    } else {
@@ -1145,44 +1174,55 @@ function deleteRecordByKeyValue(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						var filter = {};
-						filter[key] = value;
-						var arrayObj = Object.values(tableObj);
-						var records  = _.where(arrayObj, filter);
-						if (records && records.length) {
-							let lastIndex = records.length;
-							records.forEach(function(record) {
-								delete tableObj[Object.keys(tableObj).find(key => tableObj[key] === record) + ''];
-								lastIndex = lastIndex -1;
-								if (lastIndex <= 0) {   
-									fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
-						        	    if(err) {
-						        	        callback({
-			                		       		status: REQUEST_CODES.FAIL,
-			                		       		msg: 'Error while deleting record from table',
-			                		       		error: err
+			        	try {
+    			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+    						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+    						var filter = {};
+    						filter[key] = value;
+    						var arrayObj = Object.values(tableObj);
+    						var records  = _.where(arrayObj, filter);
+    						if (records && records.length) {
+    							let lastIndex = records.length;
+    							records.forEach(function(record) {
+    								delete tableObj[Object.keys(tableObj).find(key => tableObj[key] === record) + ''];
+    								lastIndex = lastIndex -1;
+    								if (lastIndex <= 0) {   
+    									fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+    						        	    if(err) {
+    						        	        callback({
+    			                		       		status: REQUEST_CODES.FAIL,
+    			                		       		msg: 'Error while deleting record from table',
+    			                		       		error: err
 
-			                		       });
-			                		       return;
-						        	    } else {
-			    				            callback({
-			    	        		       		status: REQUEST_CODES.SUCCESS,
-			    	        		       		msg: 'Deleted records successfully, Total matched records :  ' + records.length 
-			    	        		       });
-			    	        		       return;
-						        	    }
-						        	});
-								}
-							});
-						} else {
-					            callback({
-		        		       		status: REQUEST_CODES.SUCCESS,
-		        		       		msg: 'No matching records found to delete with the given filter condition ' + JSON.stringify(filter)
-		        		       });
-		        		       return;
-						}									            
+    			                		       });
+    			                		       return;
+    						        	    } else {
+    			    				            callback({
+    			    	        		       		status: REQUEST_CODES.SUCCESS,
+    			    	        		       		msg: 'Deleted records successfully, Total matched records :  ' + records.length 
+    			    	        		       });
+    			    	        		       return;
+    						        	    }
+    						        	});
+    								}
+    							});
+    						} else {
+    					            callback({
+    		        		       		status: REQUEST_CODES.SUCCESS,
+    		        		       		msg: 'No matching records found to delete with the given filter condition ' + JSON.stringify(filter)
+    		        		       });
+    		        		       return;
+    						}
+			        	}  catch (e) {
+        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				deleteRecordByKeyValue(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}
+			        										            
 			        }
 			    });		       
 		    } else {
@@ -1299,36 +1339,45 @@ function updateRecordById(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-						var record  = tableObj[recordId];
-						var keys = Object.keys(recordObj);
-						var lastIndex = keys.length;
-						keys.forEach(function(key) {
-							lastIndex = lastIndex - 1;
-							record[key] = recordObj[key];
-							if (lastIndex <= 0) {
-								tableObj[recordId] = record;
-								fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
-					        	    if(err) {
-					        	        callback({
-		                		       		status: REQUEST_CODES.FAIL,
-		                		       		msg: 'Error while updating record',
-		                		       		error: err
+			        	try {
+    			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+    						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+    						var record  = tableObj[recordId];
+    						var keys = Object.keys(recordObj);
+    						var lastIndex = keys.length;
+    						keys.forEach(function(key) {
+    							lastIndex = lastIndex - 1;
+    							record[key] = recordObj[key];
+    							if (lastIndex <= 0) {
+    								tableObj[recordId] = record;
+    								fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+    					        	    if(err) {
+    					        	        callback({
+    		                		       		status: REQUEST_CODES.FAIL,
+    		                		       		msg: 'Error while updating record',
+    		                		       		error: err
 
-		                		       });
-		                		       return;
-					        	    } else {
-		    				            callback({
-		    	        		       		status: REQUEST_CODES.SUCCESS,
-		    	        		       		msg: 'record updated successfully'
-		    	        		       });
-		    	        		       return;
-					        	    }
-					        	});
-							}
-						});
-						//Object.keys(recordObj).find(key => record[key] = recordObj.key);																				        	
+    		                		       });
+    		                		       return;
+    					        	    } else {
+    		    				            callback({
+    		    	        		       		status: REQUEST_CODES.SUCCESS,
+    		    	        		       		msg: 'record updated successfully'
+    		    	        		       });
+    		    	        		       return;
+    					        	    }
+    					        	});
+    							}
+    						});
+			        	}  catch (e) {
+        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				updateRecordById(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}																		        	
 			        }
 			    });		       
 		    } else {
