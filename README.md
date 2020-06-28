@@ -54,7 +54,7 @@ jsonDB.dropDatabase(options, function(response) {
 
 **[⬆ Back to Top](#documentation)**
 
-* #### Table operations : 
+* #### Table Operations : 
   * To create table
 
 ```
