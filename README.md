@@ -67,6 +67,31 @@ jsonDB.createTable(options, function(response) {
 });
 ```
 
+  * To drop table
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users'
+};
+jsonDB.dropTable(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
+  * To insert record table
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'record:' {'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'}
+};
+jsonDB.insertRecord(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](#) for details on our code of conduct, and the process for submitting pull requests to us.
