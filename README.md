@@ -62,6 +62,7 @@ let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
 };
+
 jsonDB.createTable(options, function(response) {
 	console.log(JSON.stringify(response));
 });
@@ -74,6 +75,7 @@ let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
 };
+
 jsonDB.dropTable(options, function(response) {
 	console.log(JSON.stringify(response));
 });
@@ -87,7 +89,55 @@ let options = {
   'tableName': 'Users',
    'record:' {'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'}
 };
+
 jsonDB.insertRecord(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
+  * To get record by Id
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'recordId:' 1
+};
+
+jsonDB.getRecordById(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
+  * To get record by key value
+  
+  If you want to search and rer=trieve a record based on some key and value use the below method.
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'key': 'email', 
+   'value': 'abc@domain.com'
+};
+
+jsonDB.getRecordByKeyValue(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
+ * To get record by more than one key value or object.
+  
+  If you want to search and rertrieve a record based on more than one key and value use the below method.
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'obj': {'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'}
+};
+
+jsonDB.getRecordByObject(options, function(response) {
 	console.log(JSON.stringify(response));
 });
 ```
