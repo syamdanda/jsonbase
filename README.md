@@ -185,6 +185,23 @@ jsonDB.updateRecordById(options, function(response) {
 });
 ```
 
+* To update record by key value
+  
+ 
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'key': 'email',
+   'value': 'mymail@domain.com',
+   recordObj: {'email': 'new123', 'pwd': 'password'}
+};
+
+jsonDB.updateRecordByKeyValue(options, function(response) {
+  console.log(JSON.stringify(response));
+});
+```
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](#) for details on our code of conduct, and the process for submitting pull requests to us.
