@@ -57,11 +57,11 @@ var jsonDB = require('./index.js');
 	console.log(JSON.stringify(response));
 });*/
 
-for (i=0; i<100; i++) {
+/*for (i=0; i<100; i++) {
 	jsonDB.getRecordById({'database': 'test', 'tableName': 'users', recordId: '116'}, function(response) {
 		console.log(JSON.stringify(response));
 	});
-}
+}*/
 
 /*jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email': 'new123', 'pwd': 'password'}}, function(response) {
 		console.log('111111111111111111111111111111');
@@ -72,3 +72,7 @@ jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email':
 		console.log('2222222222222222222222222222');
 		console.log(JSON.stringify(response));
 	});*/
+
+/*jsonDB.updateRecordByKeyValue({'database': 'test', 'tableName': 'users', key: 'email', value: 'ab14',recordObj: {'email': 'ab14', 'pwd': '1234'}}, function(response) {
+	console.log(JSON.stringify(response));
+});*/
