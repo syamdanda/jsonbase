@@ -141,6 +141,49 @@ jsonDB.getRecordByObject(options, function(response) {
 	console.log(JSON.stringify(response));
 });
 ```
+* To get all records from a table
+  
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users'
+};
+
+jsonDB.getAllRecords(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+* To delete record by Id
+  
+ 
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'recordId': 1
+};
+
+jsonDB.deleteRecordById(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
+* To update record by Id
+  
+ 
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'recordId': 1,
+   recordObj: {'email': 'new123', 'pwd': 'password'}
+};
+
+jsonDB.updateRecordById(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
 
 ## Contributing
 
