@@ -228,6 +228,7 @@ Please read [CONTRIBUTING.md](#) for details on our code of conduct, and the pro
 
 ## Versioning
 
+*	Issue fixes in 0.1.0 on 01.Jul.2020
 *	Added getRecordsBySearch API in 0.0.9 on 01.Jul.2020
 *	Documentation and issue fixes in 0.0.8 on 30.Jun.2020
 *	Added documentation in 0.0.7 on 29.Jun.2020
