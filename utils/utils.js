@@ -2,7 +2,6 @@
 var fs = require('fs');
 var os = require('os');
 var path = require('path');
-var uuid = require('uuid-random');
 var _ = require('underscore');
 
 module.exports.utils = {
@@ -22,9 +21,6 @@ module.exports.utils = {
 									result = result.replace(re, arguments[i]);
 								}
 								return result;
-							},
-							generateDocId: function(){
-								return uuid();
 							},
 							generateDocIdByTable: function(tableObj) {								
 								if (tableObj && undefined != tableObj) {
