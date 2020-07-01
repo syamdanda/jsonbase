@@ -33,6 +33,5 @@
     "rimraf": "^3.0.2",
     "underscore": "^1.10.2",
     "validator": "^13.0.0"
-  },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  }
 }
