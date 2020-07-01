@@ -141,6 +141,26 @@ jsonDB.getRecordByObject(options, function(response) {
 	console.log(JSON.stringify(response));
 });
 ```
+* To get records based on search flag
+  you can define any one value for flag
+    * beginsWith : searches records whose value is begins with the mentioned value for the key
+    * endsWith : searches records whose value is endsWith with the mentioned value for the key
+    * contains : searches records whose value contains with the mentioned value for the key
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+  'key': 'email',
+  'value': 'gmail',
+  'flag': 'contains'
+};
+
+jsonDB.getRecordsBySearch(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
 * To get all records from a table
   
 
@@ -151,7 +171,7 @@ let options = {
 };
 
 jsonDB.getAllRecords(options, function(response) {
-	console.log(JSON.stringify(response));
+  console.log(JSON.stringify(response));
 });
 ```
 * To delete record by Id
