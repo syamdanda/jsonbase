@@ -14,6 +14,7 @@ const CONSTANTS = {
     'VALIDATE': {
         'FAIL': 'Validation Error',
         'FIELD_VALUE_INVALID': 'field {0} value is invalid, no special characters are allowed other than .,-,_',
+        'FLAG_VALUE_INVALID': 'field {0} value is invalid, valid flag values are : beginsWith, endsWith or contains',
         'REQUIRED': 'field {0} is required.',
         'NOT_A_DATE': 'field {0} is incorrect UTC Date',
         'NOT_AN_EMAIL': 'field {0} is invalid email address',

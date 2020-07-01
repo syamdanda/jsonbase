@@ -10,6 +10,10 @@ var jsonDB = require('./index.js');
 
 /*jsonDB.createTable({'database': 'test', 'tableName': 'users21'}, function(response) {
 	console.log(JSON.stringify(response));
+});
+
+jsonDB.createTable({'database': 'test', 'tableName': 'users21'}, function(response) {
+	console.log(JSON.stringify(response));
 });*/
 
 /*jsonDB.createTable({'database': 'test', 'tableName': 'tokens'}, function(response) {
@@ -74,5 +78,9 @@ jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email':
 	});*/
 
 /*jsonDB.updateRecordByKeyValue({'database': 'test', 'tableName': 'users', key: 'email', value: 'ab14',recordObj: {'email': 'ab14', 'pwd': '1234'}}, function(response) {
+	console.log(JSON.stringify(response));
+});*/
+
+/*jsonDB.getRecordsBySearch({'database': 'test', 'tableName': 'users', key: 'email', value: '123', 'flag': 'endsWith'}, function(response) {
 	console.log(JSON.stringify(response));
 });*/

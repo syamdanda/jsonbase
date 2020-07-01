@@ -9,6 +9,7 @@ var validate = utils.validate;
 var _ = require('underscore');
 
 const configFileName = 'jsonDB-config.json';
+const flagValues = ['beginsWith', 'endsWith', 'contains'];
 
 function createTable(options, callback) {
 	var errorList = [];
@@ -85,50 +86,60 @@ function createTable(options, callback) {
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName + '.json';
-			    fs.writeFile(filePath, '{}', function(err) {
-			        if(err) {
-			            callback({
-        		       		status: REQUEST_CODES.FAIL,
-        		       		msg: 'Error while creating file',
-        		       		error: err
+		    	fs.exists(filePath, function(exists) {
+		    	    if (exists) {
+		    	    	callback({
+		    	    			status: REQUEST_CODES.FAIL,
+		    	    			error: 'table exists with the given name'
+		    	    	});
+		    	    	return;
+		    	    } else {
+    				    fs.writeFile(filePath, '{}', function(err) {
+    				        if(err) {
+    				            callback({
+    	        		       		status: REQUEST_CODES.FAIL,
+    	        		       		msg: 'Error while creating file',
+    	        		       		error: err
 
-        		       });
-        		       return;
-			        } else {
-			        	var configFilePath = basePath + utils.getFileSeparator() + configFileName;
-        	        	var configFileObj;
-        	        	try {
-        					configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
-        					var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
-        					currentDBConfigs['tables'].push(tableName);
-				        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
-				        	    if(err) {
-				        	        callback({
-	                		       		status: REQUEST_CODES.FAIL,
-	                		       		msg: 'Error while updating config file',
-	                		       		error: err
+    	        		       });
+    	        		       return;
+    				        } else {
+    				        	var configFilePath = basePath + utils.getFileSeparator() + configFileName;
+    	        	        	var configFileObj;
+    	        	        	try {
+    	        					configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
+    	        					var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
+    	        					currentDBConfigs['tables'].push(tableName);
+    					        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
+    					        	    if(err) {
+    					        	        callback({
+    		                		       		status: REQUEST_CODES.FAIL,
+    		                		       		msg: 'Error while updating config file',
+    		                		       		error: err
 
-	                		       });
-	                		       return;
-				        	    } else {
-	    				            callback({
-	    	        		       		status: REQUEST_CODES.SUCCESS,
-	    	        		       		msg: 'table created successfully with table name ' + tableName
-	    	        		       });
-	    	        		       return;
-				        	    }
-				        	});
-        				} catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
-        	    			setTimeout(function() {
-        	    				createTable(options, function(resp) {
-        	    					callback(resp);
-        	    				})
-        	    			}, 1000);
-        	    			return;
-        	    		}		        	
-			        }
-			    });		       
+    		                		       });
+    		                		       return;
+    					        	    } else {
+    		    				            callback({
+    		    	        		       		status: REQUEST_CODES.SUCCESS,
+    		    	        		       		msg: 'table created successfully with table name ' + tableName
+    		    	        		       });
+    		    	        		       return;
+    					        	    }
+    					        	});
+    	        				} catch (e) {
+    	        	    			console.log('waiting for file operation to be completed :::: ');
+    	        	    			setTimeout(function() {
+    	        	    				createTable(options, function(resp) {
+    	        	    					callback(resp);
+    	        	    				})
+    	        	    			}, 1000);
+    	        	    			return;
+    	        	    		}		        	
+    				        }
+    				    });
+		    	    }
+		    	});			    		       
 		    } else {
 		    	callback({
 		    			status: REQUEST_CODES.FAIL,
@@ -662,6 +673,169 @@ function getRecordByKeyValue(options, callback) {
 							filter[key] = value;
 							var arrayObj = Object.values(tableObj);
 							var records  = _.where(arrayObj, filter);
+				            callback({
+	        		       		status: REQUEST_CODES.SUCCESS,
+	        		       		result: records
+	        		       });
+	        		       return;
+	        		    }  catch (e) {
+        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			setTimeout(function() {
+        	    				getRecordByKeyValue(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}
+			        }
+			    });		       
+		    } else {
+		    	callback({
+		    			status: REQUEST_CODES.FAIL,
+		    			error: 'No database exists with the given name'
+		    	});
+		    	return;
+		    }
+		});		
+	}
+}
+
+function getRecordsBySearch(options, callback) {
+	var errorList = [];
+	var key = options.key;
+	var value = options['value'];
+	var flag = options.flag;
+	var tableName = options.tableName;
+	var database = options.database;
+
+	if (! tableName) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
+		};
+		errorList.push(e);
+	} else  {
+		if (tableName.length < 2) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
+			};
+			errorList.push(e);
+		} else if (tableName.length > 20) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
+			};
+			errorList.push(e);
+		} 
+		if (! validate.isValidString(tableName)) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (! database) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'database')
+		};
+		errorList.push(e);
+	} else  {
+		if (database.length < 2) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
+			};
+			errorList.push(e);
+		} else if (database.length > 20) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
+			};
+			errorList.push(e);
+		} 
+		if (! validate.isValidString(database)) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (! key) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'key')
+		};
+		errorList.push(e);
+	}
+	if (! value) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'value')
+		};
+		errorList.push(e);
+	}
+
+	if (! flag) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'flag')
+		};
+		errorList.push(e);
+	} else  {
+		if (!_.some(flagValues, function(value) { return value == flag;})) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FLAG_VALUE_INVALID, 'flag')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (errorList.length) {
+		callback({
+			status: REQUEST_CODES.FAIL,
+			error: errorList
+		});
+		return;
+	} else {
+		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		console.log(basePath);
+		fs.exists(basePath, function(exists) {
+		    if (exists) {
+		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+			    fs.exists(filePath, function(err) { //check file exists or not
+			        if(err) {
+			            callback({
+        		       		status: REQUEST_CODES.FAIL,
+        		       		msg: 'No table exists with the given name - ' + tableName,
+        		       		error: err
+
+        		       });
+        		       return;
+			        } else {
+			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+						var tableObj;
+						try {
+							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));							
+							var arrayObj = Object.values(tableObj);
+							var records;
+
+							switch(value) {
+							  case 'beginsWith':
+							    records  = _.filter(arrayObj, function(d){ return d[key].startsWith(value); });
+							    break;
+							  case 'endsWith':
+							    records  = _.filter(arrayObj, function(d){ return d[key].endsWith(value); });
+							    break;
+							  default:
+							    records  = _.filter(arrayObj, function(d){ return d[key].contains(value); });
+							}
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
 	        		       		result: records
@@ -1583,6 +1757,7 @@ module.exports.getRecordById = getRecordById;
 module.exports.getRecordByKeyValue = getRecordByKeyValue;
 module.exports.getRecordByObject = getRecordByObject;
 module.exports.getAllRecords = getAllRecords;
+module.exports.getRecordsBySearch = getRecordsBySearch;
 
 module.exports.updateRecordById = updateRecordById;
 module.exports.updateRecordByKeyValue = updateRecordByKeyValue;
