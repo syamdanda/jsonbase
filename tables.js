@@ -82,7 +82,6 @@ function createTable(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName + '.json';
@@ -222,7 +221,6 @@ function dropTable(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -377,7 +375,6 @@ function insertRecord(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -517,7 +514,6 @@ function getRecordById(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -651,7 +647,6 @@ function getRecordByKeyValue(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -805,7 +800,6 @@ function getRecordsBySearch(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -844,7 +838,7 @@ function getRecordsBySearch(options, callback) {
 	        		    }  catch (e) {
         	    			console.log('waiting for file operation to be completed :::: ');
         	    			setTimeout(function() {
-        	    				getRecordByKeyValue(options, function(resp) {
+        	    				getRecordsBySearch(options, function(resp) {
         	    					callback(resp);
         	    				})
         	    			}, 1000);
@@ -943,7 +937,6 @@ function getRecordByObject(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -1064,7 +1057,6 @@ function getAllRecords(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -1334,7 +1326,6 @@ function deleteRecordByKeyValue(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -1499,7 +1490,6 @@ function updateRecordById(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
@@ -1662,7 +1652,6 @@ function updateRecordByKeyValue(options, callback) {
 		return;
 	} else {
 		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
-		console.log(basePath);
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		    	var filePath = basePath + utils.getFileSeparator() + tableName;
