@@ -1,17 +1,20 @@
-var utils = require('./utils/utils').utils;
-var fs = require('fs');
-var rimraf = require('rimraf');
+const utils = require('./utils/utils').utils;
+const fs = require('fs');
+const rimraf = require('rimraf');
+const ora = require('ora');
+const spinner = ora('Processing');
 
-var CONSTANTS = utils.CONSTANTS;
-var REQUEST_CODES = CONSTANTS.REQUEST_CODES;
-var VALIDATE = utils.CONSTANTS.VALIDATE;
-var validate = utils.validate;
-var _ = require('underscore');
+const CONSTANTS = utils.CONSTANTS;
+const REQUEST_CODES = CONSTANTS.REQUEST_CODES;
+const VALIDATE = utils.CONSTANTS.VALIDATE;
+const validate = utils.validate;
+const _ = require('underscore');
 
 const configFileName = 'jsonDB-config.json';
 const flagValues = ['beginsWith', 'endsWith', 'contains'];
 
 function createTable(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var tableName = options.tableName;
 	var database = options.database;
@@ -110,6 +113,7 @@ function createTable(options, callback) {
     	        					var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
     	        					currentDBConfigs['tables'].push(tableName);
     					        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
+    					        		spinner.stop();
     					        	    if(err) {
     					        	        callback({
     		                		       		status: REQUEST_CODES.FAIL,
@@ -127,7 +131,8 @@ function createTable(options, callback) {
     					        	    }
     					        	});
     	        				} catch (e) {
-    	        	    			console.log('waiting for file operation to be completed :::: ');
+    	        	    			spinner.color = 'yellow';
+									spinner.text = 'Waiting...';
     	        	    			setTimeout(function() {
     	        	    				createTable(options, function(resp) {
     	        	    					callback(resp);
@@ -254,6 +259,7 @@ function dropTable(options, callback) {
 									if (index > -1) {
 									  	currentDBConfigs['tables'].splice(index, 1);
 				  			        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
+				  			        		spinner.stop();
 				  			        	    if(err) {
 				  			        	        callback({
 				                  		       		status: REQUEST_CODES.FAIL,
@@ -272,7 +278,8 @@ function dropTable(options, callback) {
 				  			        	});
 									}
 		        				} catch (e) {
-		        	    			console.log('waiting for file operation to be completed :::: ');
+		        	    			spinner.color = 'yellow';
+									spinner.text = 'Waiting...';
 		        	    			setTimeout(function() {
 		        	    				dropTable(options, function(resp) {
 		        	    					callback(resp);
@@ -296,6 +303,7 @@ function dropTable(options, callback) {
 }
 
 function insertRecord(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var recordObj = options.record;
 	var tableName = options.tableName;
@@ -396,6 +404,7 @@ function insertRecord(options, callback) {
 			        		recordObj['_ObjId'] = docId;
 			        		tableObj[docId] = recordObj;
 				        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+				        		spinner.stop();
 				        	    if(err) {
 				        	        callback({
 	                		       		status: REQUEST_CODES.FAIL,
@@ -404,7 +413,7 @@ function insertRecord(options, callback) {
 
 	                		       });
 	                		       return;
-				        	    } else {
+				        	    } else {				        	    	
 	    				            callback({
 	    	        		       		status: REQUEST_CODES.SUCCESS,
 	    	        		       		msg: 'record inserted successfully with the documentId ' + docId
@@ -413,7 +422,8 @@ function insertRecord(options, callback) {
 				        	    }
 				        	});
 			        	} catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+        	    			spinner.text = 'Waiting for file operation';
         	    			setTimeout(function() {
         	    				insertRecord(options, function(resp) {
         	    					callback(resp);
@@ -434,7 +444,147 @@ function insertRecord(options, callback) {
 	}
 }
 
+function batchInsert(options, callback) {
+	spinner.start();
+	var errorList = [];
+	var recordObjs = options.records;
+	var tableName = options.tableName;
+	var database = options.database;
+
+	if (! tableName) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
+		};
+		errorList.push(e);
+	} else  {
+		if (tableName.length < 2) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
+			};
+			errorList.push(e);
+		} else if (tableName.length > 20) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
+			};
+			errorList.push(e);
+		} 
+		if (! validate.isValidString(tableName)) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (! database) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'database')
+		};
+		errorList.push(e);
+	} else  {
+		if (database.length < 2) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
+			};
+			errorList.push(e);
+		} else if (database.length > 20) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
+			};
+			errorList.push(e);
+		} 
+		if (! validate.isValidString(database)) {
+			var e = {
+				status: VALIDATE.FAIL,
+				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
+			};
+			errorList.push(e);
+		}
+	}
+
+	if (! recordObjs || undefined == recordObjs || !recordObjs.length) {
+		var e = {
+			status: VALIDATE.FAIL,
+			error: utils.formatText(VALIDATE.REQUIRED, 'records')
+		};
+		errorList.push(e);
+	}
+
+	if (errorList.length) {
+		callback({
+			status: REQUEST_CODES.FAIL,
+			error: errorList
+		});
+		return;
+	} else {
+		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		fs.exists(basePath, function(exists) {
+		    if (exists) {
+		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+			    fs.exists(filePath, function(err) { //check file exists or not
+			        if(err) {
+			            callback({
+        		       		status: REQUEST_CODES.FAIL,
+        		       		msg: 'No table exists with the given name - ' + tableName,
+        		       		error: err
+
+        		       });
+        		       return;
+			        } else {
+			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+			        	var tableObj;
+			        	try {
+			        		var lastIndex = recordObjs.length;
+			        		var insertCount = 0;
+			        		recordObjs.forEach(function(recordObj) {
+			        			setTimeout(function() {
+			        				options['record'] = recordObj;
+				        			insertRecord(options, function(response) {
+				        				insertCount = insertCount + 1;
+				        				lastIndex = lastIndex - 1;
+					        	    	if (lastIndex <= 0) {
+					        	    		spinner.stop();
+    	    					            callback({
+    	    		        		       		status: REQUEST_CODES.SUCCESS,
+    	    		        		       		msg: 'successfully inserted ' + insertCount + ' records'
+    	    		        		       });
+    	    		        		       return;
+					        	    	}
+				        			});				        						        			
+						        }, 25);			        							        	
+			        		});				        	
+			        	} catch (e) {
+        	    			spinner.color = 'yellow';
+        	    			spinner.text = 'Waiting for file operation';
+        	    			setTimeout(function() {
+        	    				batchInsert(options, function(resp) {
+        	    					callback(resp);
+        	    				})
+        	    			}, 1000);
+        	    			return;
+        	    		}		        																        	
+			        }
+			    });		       
+		    } else {
+		    	callback({
+		    			status: REQUEST_CODES.FAIL,
+		    			error: 'No database exists with the given name'
+		    	});
+		    	return;
+		    }
+		});		
+	}
+}
+
 function getRecordById(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var recordId = options.recordId;
 	var tableName = options.tableName;
@@ -532,13 +682,15 @@ function getRecordById(options, callback) {
 			        	try {
 							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
 							var record  = tableObj[recordId];
+							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
 	        		       		result: record
 	        		       });
 	        		       return;
 			        	} catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				getRecordById(options, function(resp) {
         	    					callback(resp);
@@ -560,6 +712,7 @@ function getRecordById(options, callback) {
 }
 
 function getRecordByKeyValue(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var key = options.key;
 	var value = options['value'];
@@ -668,13 +821,15 @@ function getRecordByKeyValue(options, callback) {
 							filter[key] = value;
 							var arrayObj = Object.values(tableObj);
 							var records  = _.where(arrayObj, filter);
+							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
 	        		       		result: records
 	        		       });
 	        		       return;
 	        		    }  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				getRecordByKeyValue(options, function(resp) {
         	    					callback(resp);
@@ -696,6 +851,7 @@ function getRecordByKeyValue(options, callback) {
 }
 
 function getRecordsBySearch(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var key = options.key;
 	var value = options['value'];
@@ -830,13 +986,15 @@ function getRecordsBySearch(options, callback) {
 							  default:
 							    records  = _.filter(arrayObj, function(d){ return d[key].contains(value); });
 							}
+							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
 	        		       		result: records
 	        		       });
 	        		       return;
 	        		    }  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				getRecordsBySearch(options, function(resp) {
         	    					callback(resp);
@@ -858,6 +1016,7 @@ function getRecordsBySearch(options, callback) {
 }
 
 function getRecordByObject(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var obj = options.obj;
 	var tableName = options.tableName;
@@ -959,13 +1118,15 @@ function getRecordByObject(options, callback) {
 								filter[key] = obj[key];
 							})
 							var records  = _.where(arrayObj, filter);
+							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
 	        		       		result: records
 	        		       });
 	        		       return;
 			        	}  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				getRecordByObject(options, function(resp) {
         	    					callback(resp);
@@ -987,6 +1148,7 @@ function getRecordByObject(options, callback) {
 }
 
 function getAllRecords(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var tableName = options.tableName;
 	var database = options.database;
@@ -1075,13 +1237,15 @@ function getAllRecords(options, callback) {
 							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
 							var filter = {};
 							var arrayObj = Object.values(tableObj);
+							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
 	        		       		result: arrayObj
 	        		       });
 	        		       return;
 			        	}  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				getAllRecords(options, function(resp) {
         	    					callback(resp);
@@ -1103,6 +1267,7 @@ function getAllRecords(options, callback) {
 }
 
 function deleteRecordById(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var recordId = options.recordId;
 	var tableName = options.tableName;
@@ -1200,6 +1365,7 @@ function deleteRecordById(options, callback) {
 							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
 							delete tableObj[recordId];
 				        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+				        		spinner.stop();
 				        	    if(err) {
 				        	        callback({
 	                		       		status: REQUEST_CODES.FAIL,
@@ -1217,7 +1383,8 @@ function deleteRecordById(options, callback) {
 				        	    }
 				        	});
 			        	}  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				deleteRecordById(options, function(resp) {
         	    					callback(resp);
@@ -1239,6 +1406,7 @@ function deleteRecordById(options, callback) {
 }
 
 function deleteRecordByKeyValue(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var key = options.key;
 	var value = options['value'];
@@ -1353,6 +1521,7 @@ function deleteRecordByKeyValue(options, callback) {
     								lastIndex = lastIndex -1;
     								if (lastIndex <= 0) {   
     									fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+    										spinner.stop();
     						        	    if(err) {
     						        	        callback({
     			                		       		status: REQUEST_CODES.FAIL,
@@ -1379,7 +1548,8 @@ function deleteRecordByKeyValue(options, callback) {
     		        		       return;
     						}
 			        	}  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				deleteRecordByKeyValue(options, function(resp) {
         	    					callback(resp);
@@ -1402,6 +1572,7 @@ function deleteRecordByKeyValue(options, callback) {
 }
 
 function updateRecordById(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var recordId = options.recordId;
 	var recordObj = options.recordObj;
@@ -1515,6 +1686,7 @@ function updateRecordById(options, callback) {
     							if (lastIndex <= 0) {
     								tableObj[recordId] = record;
     								fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+    									spinner.stop();
     					        	    if(err) {
     					        	        callback({
     		                		       		status: REQUEST_CODES.FAIL,
@@ -1534,7 +1706,8 @@ function updateRecordById(options, callback) {
     							}
     						});
 			        	}  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				updateRecordById(options, function(resp) {
         	    					callback(resp);
@@ -1556,6 +1729,7 @@ function updateRecordById(options, callback) {
 }
 
 function updateRecordByKeyValue(options, callback) {
+	spinner.start();
 	var errorList = [];
 	var key = options.key;
 	var value = options['value'];
@@ -1686,6 +1860,7 @@ function updateRecordByKeyValue(options, callback) {
 											recordIndex = recordIndex - 1;
 											if (recordIndex <= 0) {
 												fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
+													spinner.stop();
 									        	    if(err) {
 									        	        callback({
 						                		       		status: REQUEST_CODES.FAIL,
@@ -1714,7 +1889,8 @@ function updateRecordByKeyValue(options, callback) {
 		        		       return;
 							}    						
 	        		    }  catch (e) {
-        	    			console.log('waiting for file operation to be completed :::: ');
+        	    			spinner.color = 'yellow';
+							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
         	    				updateRecordByKeyValue(options, function(resp) {
         	    					callback(resp);
@@ -1739,6 +1915,9 @@ module.exports.createTable = createTable;
 module.exports.dropTable = dropTable;
 
 module.exports.insertRecord = insertRecord;
+module.exports.batchInsert = batchInsert;
+
+
 module.exports.deleteRecordById = deleteRecordById;
 module.exports.deleteRecordByKeyValue = deleteRecordByKeyValue;
 

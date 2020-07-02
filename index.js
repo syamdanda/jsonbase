@@ -99,6 +99,13 @@ function getRecordsBySearch(options, callback) {
   });
 }
 
+function batchInsert(options, callback) {
+  tables.batchInsert(options, function(response) {
+     callback(response);
+     return;
+  });
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
 module.exports.createTable = createTable;
@@ -113,3 +120,4 @@ module.exports.deleteRecordByKeyValue = deleteRecordByKeyValue;
 module.exports.updateRecordById = updateRecordById;
 module.exports.updateRecordByKeyValue = updateRecordByKeyValue;
 module.exports.getRecordsBySearch = getRecordsBySearch;
+module.exports.batchInsert = batchInsert;

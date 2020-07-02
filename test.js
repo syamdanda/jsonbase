@@ -84,3 +84,10 @@ jsonDB.asyncTest({'database': 'test', 'tableName': 'users', recordObj: {'email':
 /*jsonDB.getRecordsBySearch({'database': 'test', 'tableName': 'users', key: 'email', value: '123', 'flag': 'endsWith'}, function(response) {
 	console.log(JSON.stringify(response));
 });*/
+
+/*for (i=0;i<1000;i++) {
+
+jsonDB.batchInsert({'database': 'test', 'tableName': 'users', records: [{'email': 'a'+ i},{'email': 'b' + i},{'email': 'c'+ i}]}, function(response) {
+	console.log(JSON.stringify(response));
+});
+}*/
