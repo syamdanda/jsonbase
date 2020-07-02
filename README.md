@@ -87,7 +87,21 @@ jsonDB.dropTable(options, function(response) {
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
-   'record:' {'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'}
+   'record': {'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'}
+};
+
+jsonDB.insertRecord(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
+  * To insert more than one record
+
+```
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'records': [{'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'},{'email': 'name2@domain.com', 'phone': '+1 1234567890', 'name': 'userName2'}]
 };
 
 jsonDB.insertRecord(options, function(response) {
@@ -101,7 +115,7 @@ jsonDB.insertRecord(options, function(response) {
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
-   'recordId:' 1
+   'recordId': 1
 };
 
 jsonDB.getRecordById(options, function(response) {
@@ -197,7 +211,7 @@ let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
    'recordId': 1,
-   recordObj: {'email': 'new123', 'pwd': 'password'}
+   'recordObj': {'email': 'new123', 'pwd': 'password'}
 };
 
 jsonDB.updateRecordById(options, function(response) {
@@ -214,7 +228,7 @@ let options = {
   'tableName': 'Users',
    'key': 'email',
    'value': 'mymail@domain.com',
-   recordObj: {'email': 'new123', 'pwd': 'password'}
+   'recordObj': {'email': 'new123', 'pwd': 'password'}
 };
 
 jsonDB.updateRecordByKeyValue(options, function(response) {
