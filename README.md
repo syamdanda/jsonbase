@@ -10,7 +10,7 @@ It is like a database software, currently having basic CRUD operation features. 
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Checckout the below examples to know how to use the JSON-Base built in APIs.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Checkout the below examples to know how to use the JSON-Base built in APIs.
 
 ## Installing
 
@@ -130,7 +130,7 @@ jsonDB.getRecordById(options, function(response) {
 
   * To get record by key value
   
-  If you want to search and rer=trieve a record based on some key and value use the below method.
+  If you want to search and retrieve a record based on some key and value use the below method.
 
 ```js
 let options = {
@@ -147,7 +147,7 @@ jsonDB.getRecordByKeyValue(options, function(response) {
 
  * To get record by more than one key value or object.
   
-  If you want to search and rertrieve a record based on more than one key and value use the below method.
+  If you want to search and retrieve a record based on more than one key and value use the below method.
 
 ```js
 let options = {
