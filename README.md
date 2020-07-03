@@ -17,7 +17,7 @@ npm i @syamdanda/json-base
 
 And then import the json-base npm module into your nodejs application
 
-```
+```js
 var jsonDB = require('@syamdanda/json-base');
 ```
 
@@ -32,7 +32,7 @@ Check-out the below code snippets to use the JSON-Base module in your applicatio
 
 * To create database
 
-```
+```js
 let options = {
   'name': 'myDatabase'
 };
@@ -43,7 +43,7 @@ jsonDB.createDatabase(options, function(response) {
 
 * To delete database
 
-```
+```js
 let options = {
   'name': 'myDatabase'
 };
@@ -57,7 +57,7 @@ jsonDB.dropDatabase(options, function(response) {
 * ### Table Operations 
   * To create table
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
@@ -70,7 +70,7 @@ jsonDB.createTable(options, function(response) {
 
   * To drop table
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
@@ -83,7 +83,7 @@ jsonDB.dropTable(options, function(response) {
 
   * To insert record table
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -97,7 +97,7 @@ jsonDB.insertRecord(options, function(response) {
 
   * To insert more than one record
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -111,7 +111,7 @@ jsonDB.insertRecord(options, function(response) {
 
   * To get record by Id
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -127,7 +127,7 @@ jsonDB.getRecordById(options, function(response) {
   
   If you want to search and rer=trieve a record based on some key and value use the below method.
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -144,7 +144,7 @@ jsonDB.getRecordByKeyValue(options, function(response) {
   
   If you want to search and rertrieve a record based on more than one key and value use the below method.
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -161,7 +161,7 @@ jsonDB.getRecordByObject(options, function(response) {
     * endsWith : searches records whose value is endsWith with the mentioned value for the key
     * contains : searches records whose value contains with the mentioned value for the key
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -178,7 +178,7 @@ jsonDB.getRecordsBySearch(options, function(response) {
 * To get all records from a table
   
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
@@ -191,7 +191,7 @@ jsonDB.getAllRecords(options, function(response) {
 * To delete record by Id
   
  
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -206,7 +206,7 @@ jsonDB.deleteRecordById(options, function(response) {
 * To update record by Id
   
  
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -222,7 +222,7 @@ jsonDB.updateRecordById(options, function(response) {
 * To update record by key value
   
  
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
