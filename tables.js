@@ -854,7 +854,7 @@ function getRecordsBySearch(options, callback) {
 	spinner.start();
 	var errorList = [];
 	var key = options.key;
-	var value = options['value'];
+	var value = options['value']  +'';
 	var flag = options.flag;
 	var tableName = options.tableName;
 	var database = options.database;
@@ -975,7 +975,6 @@ function getRecordsBySearch(options, callback) {
 							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));							
 							var arrayObj = Object.values(tableObj);
 							var records;
-
 							switch(value) {
 							  case 'beginsWith':
 							    records  = _.filter(arrayObj, function(d){ return d[key].startsWith(value); });
@@ -984,7 +983,7 @@ function getRecordsBySearch(options, callback) {
 							    records  = _.filter(arrayObj, function(d){ return d[key].endsWith(value); });
 							    break;
 							  default:
-							    records  = _.filter(arrayObj, function(d){ return d[key].contains(value); });
+							    records  = _.filter(arrayObj, function(d){return d[key].includes(value); });
 							}
 							spinner.stop();
 				            callback({
@@ -993,6 +992,7 @@ function getRecordsBySearch(options, callback) {
 	        		       });
 	        		       return;
 	        		    }  catch (e) {
+	        		    	console.log('e ;;', e);
         	    			spinner.color = 'yellow';
 							spinner.text = 'Waiting...';
         	    			setTimeout(function() {
