@@ -3,9 +3,14 @@
 A database software completely built as JSON files in backend. A powerful, portable and simple database works on top of JSON files.
 It is like a database software, currently having basic CRUD operation features. You can use this as a backend for your ReST APIs as well. The software is completely free and opensource. We are coming up with new features and providing more updates. The another beautiful advantage with JSON-base is since it is a NPM module, this fits well in your nodeJs applications eco system. if you want to develop quick prototypes/poc or need of a database with minimal requirements then, JSONBASe is an must option that you can consider. However there is a limitation if you go beyond a million records per table.
 
+```diff
+@@ Currently in Pre-Alpha Version @@
+```
+
+
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Checckout the below examples to know how to use the JSON-Base built in APIs.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. Checkout the below examples to know how to use the JSON-Base built in APIs.
 
 ## Installing
 
@@ -17,7 +22,7 @@ npm i @syamdanda/json-base
 
 And then import the json-base npm module into your nodejs application
 
-```
+```js
 var jsonDB = require('@syamdanda/json-base');
 ```
 
@@ -32,7 +37,7 @@ Check-out the below code snippets to use the JSON-Base module in your applicatio
 
 * To create database
 
-```
+```js
 let options = {
   'name': 'myDatabase'
 };
@@ -43,7 +48,7 @@ jsonDB.createDatabase(options, function(response) {
 
 * To delete database
 
-```
+```js
 let options = {
   'name': 'myDatabase'
 };
@@ -57,7 +62,7 @@ jsonDB.dropDatabase(options, function(response) {
 * ### Table Operations 
   * To create table
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
@@ -70,7 +75,7 @@ jsonDB.createTable(options, function(response) {
 
   * To drop table
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
@@ -83,11 +88,11 @@ jsonDB.dropTable(options, function(response) {
 
   * To insert record table
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
-   'record:' {'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'}
+   'record': {'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'}
 };
 
 jsonDB.insertRecord(options, function(response) {
@@ -95,13 +100,27 @@ jsonDB.insertRecord(options, function(response) {
 });
 ```
 
-  * To get record by Id
+  * To insert more than one record
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
-   'recordId:' 1
+   'records': [{'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'},{'email': 'name2@domain.com', 'phone': '+1 1234567890', 'name': 'userName2'}]
+};
+
+jsonDB.batchInsert(options, function(response) {
+	console.log(JSON.stringify(response));
+});
+```
+
+  * To get record by Id
+
+```js
+let options = {
+  'database': 'myDatabase',
+  'tableName': 'Users',
+   'recordId': 1
 };
 
 jsonDB.getRecordById(options, function(response) {
@@ -111,9 +130,9 @@ jsonDB.getRecordById(options, function(response) {
 
   * To get record by key value
   
-  If you want to search and rer=trieve a record based on some key and value use the below method.
+  If you want to search and retrieve a record based on some key and value use the below method.
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -128,9 +147,9 @@ jsonDB.getRecordByKeyValue(options, function(response) {
 
  * To get record by more than one key value or object.
   
-  If you want to search and rertrieve a record based on more than one key and value use the below method.
+  If you want to search and retrieve a record based on more than one key and value use the below method.
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -147,7 +166,7 @@ jsonDB.getRecordByObject(options, function(response) {
     * endsWith : searches records whose value is endsWith with the mentioned value for the key
     * contains : searches records whose value contains with the mentioned value for the key
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -164,7 +183,7 @@ jsonDB.getRecordsBySearch(options, function(response) {
 * To get all records from a table
   
 
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users'
@@ -177,7 +196,7 @@ jsonDB.getAllRecords(options, function(response) {
 * To delete record by Id
   
  
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
@@ -192,12 +211,12 @@ jsonDB.deleteRecordById(options, function(response) {
 * To update record by Id
   
  
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
    'recordId': 1,
-   recordObj: {'email': 'new123', 'pwd': 'password'}
+   'recordObj': {'email': 'new123', 'pwd': 'password'}
 };
 
 jsonDB.updateRecordById(options, function(response) {
@@ -208,13 +227,13 @@ jsonDB.updateRecordById(options, function(response) {
 * To update record by key value
   
  
-```
+```js
 let options = {
   'database': 'myDatabase',
   'tableName': 'Users',
    'key': 'email',
    'value': 'mymail@domain.com',
-   recordObj: {'email': 'new123', 'pwd': 'password'}
+   'recordObj': {'email': 'new123', 'pwd': 'password'}
 };
 
 jsonDB.updateRecordByKeyValue(options, function(response) {
