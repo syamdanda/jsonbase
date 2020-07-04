@@ -109,7 +109,7 @@ let options = {
    'records': [{'email': 'name@domain.com', 'phone': '+1 1234567890', 'name': 'userName'},{'email': 'name2@domain.com', 'phone': '+1 1234567890', 'name': 'userName2'}]
 };
 
-jsonDB.insertRecord(options, function(response) {
+jsonDB.batchInsert(options, function(response) {
 	console.log(JSON.stringify(response));
 });
 ```
