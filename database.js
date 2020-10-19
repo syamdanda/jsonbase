@@ -2,41 +2,41 @@
 // All functionalities related to database
 
 
-var utils = require('./utils/utils').utils;
-var fs = require('fs');
-var rimraf = require('rimraf');
+const utils = require('./utils/utils').utils;
+const fs = require('fs');
+const rimraf = require('rimraf');
 
-var CONSTANTS = utils.CONSTANTS;
-var REQUEST_CODES = CONSTANTS.REQUEST_CODES;
-var VALIDATE = utils.CONSTANTS.VALIDATE;
-var validate = utils.validate;
+const CONSTANTS = utils.CONSTANTS;
+const REQUEST_CODES = CONSTANTS.REQUEST_CODES;
+const VALIDATE = utils.CONSTANTS.VALIDATE;
+const validate = utils.validate;
 
 function createDatabase(options, callback) {
-	var errorList = [];
-	var name = options.name;
-	var path = options.path;
+	let errorList = [];
+	let name = options.name;
+	let path = options.path;
 	if (! name) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'name')
 		};
 		errorList.push(e);
 	} else  {
 		if (name.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'name')
 			};
 			errorList.push(e);
 		} else if (name.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'name')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(name)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'name')
 			};
@@ -51,7 +51,7 @@ function createDatabase(options, callback) {
 		});
 		return;
 	} else {
-		var basePath;
+		let basePath;
 		if (! path) {
 			basePath = utils.getRootPath() + utils.getFileSeparator() + name;			
 		} else {
@@ -76,7 +76,7 @@ function createDatabase(options, callback) {
 			        } else {
 			        	let configTemplate = utils.getConfigFileTemplate();
 
-			        	var db = {
+			        	let db = {
 			        		'name': name,
 			        		'path': basePath,
 			        		'tables': []
@@ -97,29 +97,29 @@ function createDatabase(options, callback) {
 }
 
 function dropDatabase(name, callback) {
-	var errorList = [];
+	let errorList = [];
 	if (! name) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'name')
 		};
 		errorList.push(e);
 	} else  {
 		if (name.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'name')
 			};
 			errorList.push(e);
 		} else if (name.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'name')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(name)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'name')
 			};
@@ -134,7 +134,7 @@ function dropDatabase(name, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + name;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + name;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
 		       rimraf(basePath, function () { 

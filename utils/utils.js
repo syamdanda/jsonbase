@@ -1,23 +1,23 @@
 
-var fs = require('fs');
-var os = require('os');
-var path = require('path');
-var _ = require('underscore');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const _ = require('underscore');
 
 module.exports.utils = {
 							CONSTANTS: require('./constants').CONSTANTS,
 							validate: require('./validate').validate,
 							cloneObject: function(object) {
-								 var cloneObject = {};
+								 let cloneObject = {};
 								 Object.keys(object).forEach(function(key) {
 								 	cloneObject[key] = object[key];
 								 });	
 					    		return cloneObject;
 							},
 							formatText: function(text) {
-								var result = text;
-								for (var i = 1; i < arguments.length; i += 1) {
-									var re = new RegExp('\\{' + (i-1) + '\\}', 'g');
+								let result = text;
+								for (let i = 1; i < arguments.length; i += 1) {
+									let re = new RegExp('\\{' + (i-1) + '\\}', 'g');
 									result = result.replace(re, arguments[i]);
 								}
 								return result;
@@ -25,7 +25,7 @@ module.exports.utils = {
 							generateDocIdByTable: function(tableObj) {								
 								if (tableObj && undefined != tableObj) {
 									if (Object.keys(tableObj).length) {
-										var keys = Object.keys(tableObj).map(Number);
+										let keys = Object.keys(tableObj).map(Number);
 										return keys.length ? _.max(keys) + 1 : 1;
 									} else {
 										return 1;
@@ -36,13 +36,13 @@ module.exports.utils = {
 							},
 							getSystemTime: function() {
 								//return new Date().getTime();
-								var date = new Date();
-								var yyyy = date.getFullYear().toString();
-						        var MM = ("0" + (date.getMonth() + 1)).slice(-2);
-						        var dd = ("0" + (date.getDate())).slice(-2);
-						        var hh = ("0" + (date.getHours())).slice(-2);
-						        var mm = ("0" + (date.getMinutes())).slice(-2);
-						        var ss = ("0" + (date.getSeconds())).slice(-2);
+								let date = new Date();
+								let yyyy = date.getFullYear().toString();
+						        let MM = ("0" + (date.getMonth() + 1)).slice(-2);
+						        let dd = ("0" + (date.getDate())).slice(-2);
+						        let hh = ("0" + (date.getHours())).slice(-2);
+						        let mm = ("0" + (date.getMinutes())).slice(-2);
+						        let ss = ("0" + (date.getSeconds())).slice(-2);
 
 						        return yyyy + MM + dd+  hh + mm + ss;
 							},

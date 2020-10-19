@@ -15,32 +15,32 @@ const flagValues = ['beginsWith', 'endsWith', 'contains'];
 
 function createTable(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -49,27 +49,27 @@ function createTable(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -84,10 +84,10 @@ function createTable(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName + '.json';
+		    	let filePath = basePath + utils.getFileSeparator() + tableName + '.json';
 		    	fs.exists(filePath, function(exists) {
 		    	    if (exists) {
 		    	    	callback({
@@ -106,11 +106,11 @@ function createTable(options, callback) {
     	        		       });
     	        		       return;
     				        } else {
-    				        	var configFilePath = basePath + utils.getFileSeparator() + configFileName;
-    	        	        	var configFileObj;
+    				        	let configFilePath = basePath + utils.getFileSeparator() + configFileName;
+    	        	        	let configFileObj;
     	        	        	try {
     	        					configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
-    	        					var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
+    	        					let currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
     	        					currentDBConfigs['tables'].push(tableName);
     					        	fs.writeFile(configFilePath, JSON.stringify(configFileObj), function(err) {
     					        		spinner.stop();
@@ -156,32 +156,32 @@ function createTable(options, callback) {
 }
 
 function dropTable(options, callback) {
-	var errorList = [];
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -190,27 +190,27 @@ function dropTable(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -225,10 +225,10 @@ function dropTable(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -239,7 +239,7 @@ function dropTable(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
 			        	fs.unlink(tablePath, function (err) {            
 							if (err) {                                                 
 							  callback({
@@ -250,11 +250,11 @@ function dropTable(options, callback) {
 	          		       		});
 	          		       		return;                                    
 							} else {
-								var configFilePath = basePath + utils.getFileSeparator() + configFileName;
-								var configFileObj;
+								let configFilePath = basePath + utils.getFileSeparator() + configFileName;
+								let configFileObj;
 		        	        	try {
 		        					configFileObj = JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
-									var currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
+									let currentDBConfigs = _.findWhere(configFileObj['databases'], {name: database});
 									const index = currentDBConfigs['tables'].indexOf(tableName);
 									if (index > -1) {
 									  	currentDBConfigs['tables'].splice(index, 1);
@@ -304,33 +304,33 @@ function dropTable(options, callback) {
 
 function insertRecord(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var recordObj = options.record;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let recordObj = options.record;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -339,27 +339,27 @@ function insertRecord(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -368,7 +368,7 @@ function insertRecord(options, callback) {
 	}
 
 	if (! recordObj || undefined == recordObj || !Object.keys(recordObj).length) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'record')
 		};
@@ -382,10 +382,10 @@ function insertRecord(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -396,11 +396,11 @@ function insertRecord(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-			        	var tableObj;
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+			        	let tableObj;
 			        	try {
 			        		tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-			        		var docId = utils.generateDocIdByTable(tableObj) + '';
+			        		let docId = utils.generateDocIdByTable(tableObj) + '';
 			        		recordObj['_ObjId'] = docId;
 			        		tableObj[docId] = recordObj;
 				        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
@@ -446,33 +446,33 @@ function insertRecord(options, callback) {
 
 function batchInsert(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var recordObjs = options.records;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let recordObjs = options.records;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -481,27 +481,27 @@ function batchInsert(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -510,7 +510,7 @@ function batchInsert(options, callback) {
 	}
 
 	if (! recordObjs || undefined == recordObjs || !recordObjs.length) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'records')
 		};
@@ -524,10 +524,10 @@ function batchInsert(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -538,11 +538,11 @@ function batchInsert(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-			        	var tableObj;
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+			        	let tableObj;
 			        	try {
-			        		var lastIndex = recordObjs.length;
-			        		var insertCount = 0;
+			        		let lastIndex = recordObjs.length;
+			        		let insertCount = 0;
 			        		recordObjs.forEach(function(recordObj) {
 			        			setTimeout(function() {
 			        				options['record'] = recordObj;
@@ -585,33 +585,33 @@ function batchInsert(options, callback) {
 
 function getRecordById(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var recordId = options.recordId;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let recordId = options.recordId;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -620,27 +620,27 @@ function getRecordById(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -649,7 +649,7 @@ function getRecordById(options, callback) {
 	}
 
 	if (! recordId) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'record')
 		};
@@ -663,10 +663,10 @@ function getRecordById(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -677,11 +677,11 @@ function getRecordById(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-			        	var tableObj;
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+			        	let tableObj;
 			        	try {
 							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-							var record  = tableObj[recordId];
+							let record  = tableObj[recordId];
 							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
@@ -713,34 +713,34 @@ function getRecordById(options, callback) {
 
 function getRecordByKeyValue(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var key = options.key;
-	var value = options['value'];
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let key = options.key;
+	let value = options['value'];
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -749,27 +749,27 @@ function getRecordByKeyValue(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -778,14 +778,14 @@ function getRecordByKeyValue(options, callback) {
 	}
 
 	if (! key) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'key')
 		};
 		errorList.push(e);
 	}
 	if (! value) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'value')
 		};
@@ -799,10 +799,10 @@ function getRecordByKeyValue(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -813,14 +813,14 @@ function getRecordByKeyValue(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj;
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+						let tableObj;
 						try {
 							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-							var filter = {};
+							let filter = {};
 							filter[key] = value;
-							var arrayObj = Object.values(tableObj);
-							var records  = _.where(arrayObj, filter);
+							let arrayObj = Object.values(tableObj);
+							let records  = _.where(arrayObj, filter);
 							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
@@ -852,35 +852,35 @@ function getRecordByKeyValue(options, callback) {
 
 function getRecordsBySearch(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var key = options.key;
-	var value = options['value']  +'';
-	var flag = options.flag;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let key = options.key;
+	let value = options['value']  +'';
+	let flag = options.flag;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -889,27 +889,27 @@ function getRecordsBySearch(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -918,14 +918,14 @@ function getRecordsBySearch(options, callback) {
 	}
 
 	if (! key) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'key')
 		};
 		errorList.push(e);
 	}
 	if (! value) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'value')
 		};
@@ -933,14 +933,14 @@ function getRecordsBySearch(options, callback) {
 	}
 
 	if (! flag) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'flag')
 		};
 		errorList.push(e);
 	} else  {
 		if (!_.some(flagValues, function(value) { return value == flag;})) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FLAG_VALUE_INVALID, 'flag')
 			};
@@ -955,10 +955,10 @@ function getRecordsBySearch(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -969,12 +969,12 @@ function getRecordsBySearch(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj;
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+						let tableObj;
 						try {
 							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));							
-							var arrayObj = Object.values(tableObj);
-							var records;
+							let arrayObj = Object.values(tableObj);
+							let records;
 							switch(value) {
 							  case 'beginsWith':
 							    records  = _.filter(arrayObj, function(d){ return d[key].startsWith(value); });
@@ -1017,33 +1017,33 @@ function getRecordsBySearch(options, callback) {
 
 function getRecordByObject(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var obj = options.obj;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let obj = options.obj;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -1052,27 +1052,27 @@ function getRecordByObject(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -1081,7 +1081,7 @@ function getRecordByObject(options, callback) {
 	}
 
 	if (! obj || undefined == obj || !Object.keys(obj).length) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'obj')
 		};
@@ -1095,10 +1095,10 @@ function getRecordByObject(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -1109,15 +1109,15 @@ function getRecordByObject(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
 			        	try {
-							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-							var filter = {};
-							var arrayObj = Object.values(tableObj);
+							let tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							let filter = {};
+							let arrayObj = Object.values(tableObj);
 							Object.keys(obj).forEach(function(key) {
 								filter[key] = obj[key];
 							})
-							var records  = _.where(arrayObj, filter);
+							let records  = _.where(arrayObj, filter);
 							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
@@ -1149,32 +1149,32 @@ function getRecordByObject(options, callback) {
 
 function getAllRecords(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -1183,27 +1183,27 @@ function getAllRecords(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -1218,10 +1218,10 @@ function getAllRecords(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -1233,10 +1233,10 @@ function getAllRecords(options, callback) {
         		       return;
 			        } else {
 			        	try {
-				        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-							var filter = {};
-							var arrayObj = Object.values(tableObj);
+				        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+							let tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+							let filter = {};
+							let arrayObj = Object.values(tableObj);
 							spinner.stop();
 				            callback({
 	        		       		status: REQUEST_CODES.SUCCESS,
@@ -1268,33 +1268,33 @@ function getAllRecords(options, callback) {
 
 function deleteRecordById(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var recordId = options.recordId;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let recordId = options.recordId;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -1303,27 +1303,27 @@ function deleteRecordById(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -1332,7 +1332,7 @@ function deleteRecordById(options, callback) {
 	}
 
 	if (! recordId) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'record')
 		};
@@ -1346,10 +1346,10 @@ function deleteRecordById(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -1361,8 +1361,8 @@ function deleteRecordById(options, callback) {
         		       return;
 			        } else {
 			        	try {
-				        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-							var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+				        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+							let tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
 							delete tableObj[recordId];
 				        	fs.writeFile(tablePath, JSON.stringify(tableObj), function(err) {
 				        		spinner.stop();
@@ -1407,34 +1407,34 @@ function deleteRecordById(options, callback) {
 
 function deleteRecordByKeyValue(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var key = options.key;
-	var value = options['value'];
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let key = options.key;
+	let value = options['value'];
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -1443,27 +1443,27 @@ function deleteRecordByKeyValue(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -1472,14 +1472,14 @@ function deleteRecordByKeyValue(options, callback) {
 	}
 
 	if (! key) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'key')
 		};
 		errorList.push(e);
 	}
 	if (! value) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'value')
 		};
@@ -1493,10 +1493,10 @@ function deleteRecordByKeyValue(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -1508,12 +1508,12 @@ function deleteRecordByKeyValue(options, callback) {
         		       return;
 			        } else {
 			        	try {
-    			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-    						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-    						var filter = {};
+    			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+    						let tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+    						let filter = {};
     						filter[key] = value;
-    						var arrayObj = Object.values(tableObj);
-    						var records  = _.where(arrayObj, filter);
+    						let arrayObj = Object.values(tableObj);
+    						let records  = _.where(arrayObj, filter);
     						if (records && records.length) {
     							let lastIndex = records.length;
     							records.forEach(function(record) {
@@ -1573,34 +1573,34 @@ function deleteRecordByKeyValue(options, callback) {
 
 function updateRecordById(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var recordId = options.recordId;
-	var recordObj = options.recordObj;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let recordId = options.recordId;
+	let recordObj = options.recordObj;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -1609,27 +1609,27 @@ function updateRecordById(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -1638,7 +1638,7 @@ function updateRecordById(options, callback) {
 	}
 
 	if (! recordId) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'recordId')
 		};
@@ -1646,7 +1646,7 @@ function updateRecordById(options, callback) {
 	}
 
 	if (! recordObj || undefined == recordObj || !Object.keys(recordObj).length) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'recordObj')
 		};
@@ -1660,10 +1660,10 @@ function updateRecordById(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -1675,11 +1675,11 @@ function updateRecordById(options, callback) {
         		       return;
 			        } else {
 			        	try {
-    			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-    						var tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-    						var record  = tableObj[recordId];
-    						var keys = Object.keys(recordObj);
-    						var lastIndex = keys.length;
+    			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+    						let tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
+    						let record  = tableObj[recordId];
+    						let keys = Object.keys(recordObj);
+    						let lastIndex = keys.length;
     						keys.forEach(function(key) {
     							lastIndex = lastIndex - 1;
     							record[key] = recordObj[key];
@@ -1730,35 +1730,35 @@ function updateRecordById(options, callback) {
 
 function updateRecordByKeyValue(options, callback) {
 	spinner.start();
-	var errorList = [];
-	var key = options.key;
-	var value = options['value'];
-	var recordObj = options.recordObj;
-	var tableName = options.tableName;
-	var database = options.database;
+	let errorList = [];
+	let key = options.key;
+	let value = options['value'];
+	let recordObj = options.recordObj;
+	let tableName = options.tableName;
+	let database = options.database;
 
 	if (! tableName) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'tableName')
 		};
 		errorList.push(e);
 	} else  {
 		if (tableName.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'tableName')
 			};
 			errorList.push(e);
 		} else if (tableName.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'tableName')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(tableName)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'tableName')
 			};
@@ -1767,27 +1767,27 @@ function updateRecordByKeyValue(options, callback) {
 	}
 
 	if (! database) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'database')
 		};
 		errorList.push(e);
 	} else  {
 		if (database.length < 2) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, 'database')
 			};
 			errorList.push(e);
 		} else if (database.length > 20) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.VALUE_TOO_BIG, 'database')
 			};
 			errorList.push(e);
 		} 
 		if (! validate.isValidString(database)) {
-			var e = {
+			let e = {
 				status: VALIDATE.FAIL,
 				error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, 'database')
 			};
@@ -1796,14 +1796,14 @@ function updateRecordByKeyValue(options, callback) {
 	}
 
 	if (! key) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'key')
 		};
 		errorList.push(e);
 	}
 	if (! value) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'value')
 		};
@@ -1811,7 +1811,7 @@ function updateRecordByKeyValue(options, callback) {
 	}
 
 	if (! recordObj || undefined == recordObj || !Object.keys(recordObj).length) {
-		var e = {
+		let e = {
 			status: VALIDATE.FAIL,
 			error: utils.formatText(VALIDATE.REQUIRED, 'recordObj')
 		};
@@ -1825,10 +1825,10 @@ function updateRecordByKeyValue(options, callback) {
 		});
 		return;
 	} else {
-		var basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+		let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
 		fs.exists(basePath, function(exists) {
 		    if (exists) {
-		    	var filePath = basePath + utils.getFileSeparator() + tableName;
+		    	let filePath = basePath + utils.getFileSeparator() + tableName;
 			    fs.exists(filePath, function(err) { //check file exists or not
 			        if(err) {
 			            callback({
@@ -1839,19 +1839,19 @@ function updateRecordByKeyValue(options, callback) {
         		       });
         		       return;
 			        } else {
-			        	var tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
-						var tableObj;
+			        	let tablePath = basePath + utils.getFileSeparator() + tableName + '.json';
+						let tableObj;
 						try {
 							tableObj = JSON.parse(fs.readFileSync(tablePath, 'utf8'));
-							var filter = {};
+							let filter = {};
 							filter[key] = value;
-							var arrayObj = Object.values(tableObj);
-							var records  = _.where(arrayObj, filter);
+							let arrayObj = Object.values(tableObj);
+							let records  = _.where(arrayObj, filter);
 							if (records && records.length) {
-								var recordIndex = records.length;
+								let recordIndex = records.length;
 								records.forEach(function(record) {
-									var keys = Object.keys(recordObj);
-									var lastIndex = keys.length;
+									let keys = Object.keys(recordObj);
+									let lastIndex = keys.length;
 									keys.forEach(function(key) {
 										lastIndex = lastIndex - 1;
 										record[key] = recordObj[key];
