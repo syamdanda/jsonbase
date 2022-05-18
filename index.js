@@ -106,6 +106,20 @@ function batchInsert(options, callback) {
   });
 }
 
+function isTableExists(options, callback) {
+  tables.isExist(options, function (response) {
+    callback(response);
+    return;
+  });
+}
+
+function isDatabaseExists(options, callback) {
+  db.isExist(options, function (response) {
+    callback(response);
+    return;
+  });
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
 module.exports.createTable = createTable;
@@ -121,3 +135,5 @@ module.exports.updateRecordById = updateRecordById;
 module.exports.updateRecordByKeyValue = updateRecordByKeyValue;
 module.exports.getRecordsBySearch = getRecordsBySearch;
 module.exports.batchInsert = batchInsert;
+module.exports.isTableExists = isTableExists;
+module.exports.isDatabaseExists = isDatabaseExists;

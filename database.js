@@ -158,5 +158,71 @@ function dropDatabase(name, callback) {
 
 }
 
+function isDatabaseExists(options, callback) {
+  let errorList = [];
+  let name = options.name;
+  let path = options.path;
+  if (!name) {
+    let e = {
+      status: VALIDATE.FAIL,
+      error: utils.formatText(VALIDATE.REQUIRED, "name"),
+    };
+    errorList.push(e);
+  } else {
+    if (name.length < 2) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, "name"),
+      };
+      errorList.push(e);
+    } else if (name.length > 20) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.VALUE_TOO_BIG, "name"),
+      };
+      errorList.push(e);
+    }
+    if (!validate.isValidString(name)) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, "name"),
+      };
+      errorList.push(e);
+    }
+  }
+
+  if (errorList.length) {
+    callback({
+      status: REQUEST_CODES.FAIL,
+      error: errorList,
+    });
+    return;
+  } else {
+    let basePath;
+    if (!path) {
+      basePath = utils.getRootPath() + utils.getFileSeparator() + name;
+    } else {
+      basePath = path + utils.getFileSeparator() + name;
+    }
+
+    fs.exists(basePath, function (exists) {
+      if (exists) {
+        callback({
+          status: REQUEST_CODES.SUCCESS,
+          isExists: true
+        });
+        return;
+      } else {
+        callback({
+          status: REQUEST_CODES.SUCCESS,
+          isExists: false,
+        });
+        return;
+      }
+    });
+  }
+}
+
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
+module.exports.isDatabaseExists = isDatabaseExists;

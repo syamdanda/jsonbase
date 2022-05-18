@@ -1911,6 +1911,108 @@ function updateRecordByKeyValue(options, callback) {
 	}
 }
 
+function isExist(options, callback) {
+  spinner.start();
+  let errorList = [];
+  let tableName = options.tableName;
+  let database = options.database;
+
+  if (!tableName) {
+    let e = {
+      status: VALIDATE.FAIL,
+      error: utils.formatText(VALIDATE.REQUIRED, "tableName"),
+    };
+    errorList.push(e);
+  } else {
+    if (tableName.length < 2) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, "tableName"),
+      };
+      errorList.push(e);
+    } else if (tableName.length > 20) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.VALUE_TOO_BIG, "tableName"),
+      };
+      errorList.push(e);
+    }
+    if (!validate.isValidString(tableName)) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, "tableName"),
+      };
+      errorList.push(e);
+    }
+  }
+
+  if (!database) {
+    let e = {
+      status: VALIDATE.FAIL,
+      error: utils.formatText(VALIDATE.REQUIRED, "database"),
+    };
+    errorList.push(e);
+  } else {
+    if (database.length < 2) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.VALUE_TOO_SMALL, "database"),
+      };
+      errorList.push(e);
+    } else if (database.length > 20) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.VALUE_TOO_BIG, "database"),
+      };
+      errorList.push(e);
+    }
+    if (!validate.isValidString(database)) {
+      let e = {
+        status: VALIDATE.FAIL,
+        error: utils.formatText(VALIDATE.FIELD_VALUE_INVALID, "database"),
+      };
+      errorList.push(e);
+    }
+  }
+
+  if (errorList.length) {
+    callback({
+      status: REQUEST_CODES.FAIL,
+      error: errorList,
+    });
+    return;
+  } else {
+    let basePath = utils.getRootPath() + utils.getFileSeparator() + database;
+    fs.exists(basePath, function (exists) {
+      if (exists) {
+        let filePath =
+          basePath + utils.getFileSeparator() + tableName + ".json";
+        fs.exists(filePath, function (exists) {
+          if (exists) {
+            callback({
+              status: REQUEST_CODES.SUCCESS,
+              isExists: true
+            });
+            return;
+          } else {
+            callback({
+              status: REQUEST_CODES.SUCCESS,
+              isExists: false,
+            });
+            return;
+          }
+        });
+      } else {
+        callback({
+          status: REQUEST_CODES.FAIL,
+          error: "No database exists with the given name"
+        });
+        return;
+      }
+    });
+  }
+}
+
 module.exports.createTable = createTable;
 module.exports.dropTable = dropTable;
 
@@ -1929,3 +2031,5 @@ module.exports.getRecordsBySearch = getRecordsBySearch;
 
 module.exports.updateRecordById = updateRecordById;
 module.exports.updateRecordByKeyValue = updateRecordByKeyValue;
+
+module.exports.isExist = isExist;
