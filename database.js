@@ -158,7 +158,7 @@ function dropDatabase(name, callback) {
 
 }
 
-function isDatabaseExists(options, callback) {
+function isExist(options, callback) {
   let errorList = [];
   let name = options.name;
   let path = options.path;
@@ -209,7 +209,7 @@ function isDatabaseExists(options, callback) {
       if (exists) {
         callback({
           status: REQUEST_CODES.SUCCESS,
-          isExists: true
+          isExists: true,
         });
         return;
       } else {
@@ -225,4 +225,4 @@ function isDatabaseExists(options, callback) {
 
 module.exports.createDatabase = createDatabase;
 module.exports.dropDatabase = dropDatabase;
-module.exports.isDatabaseExists = isDatabaseExists;
+module.exports.isExist = isExist;
